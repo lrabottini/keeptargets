@@ -6,7 +6,7 @@ class ExecutionMessage {
         this.action = action
         this.messageType = messageType
         this.messageDesc = messageDesc
-        this.params = params
+        this.attrs = attrs
         this.errors = errors
     }
 }
