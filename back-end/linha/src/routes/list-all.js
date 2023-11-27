@@ -1,19 +1,19 @@
 import express from 'express'
 import { ExecutionMessage, ExecutionTypes, ExecutionStatus } from '@keeptargets/common'
-import { Periodo } from '../models/periodo.js'
+import { Linha } from '../models/linha.js'
 
 const router = express.Router()
 
-router.get('/periodo', async (req, res) => {
+router.get('/linha', async (req, res) => {
     try {
-        const periodo = await Periodo.find()
+        const linha = await Linha.find()
 
-        res.send(periodo)
+        res.send(linha)
     } catch (e) {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
-            'Erro ao buscar períodos.',
+            'Erro ao buscar linhas.',
             req.params,
             e.stack 
         )
@@ -21,4 +21,4 @@ router.get('/periodo', async (req, res) => {
     }
 })
 
-export { router as listAllPeriodo }
+export { router as listAllLinha }

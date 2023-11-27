@@ -1,12 +1,12 @@
 import express from 'express'
-import { Periodo } from '../models/periodo.js'
+import { Linha } from '../models/linha.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
 
 const router = express.Router()
 
-router.get('/periodo/:id', async (req, res) => {
+router.get('/linha/:id', async (req, res) => {
     try {
-        await Periodo.findById(req.params.id)
+        await Linha.findById(req.params.id)
             .then((result) => {
                 res.send(result)
             })
@@ -14,7 +14,7 @@ router.get('/periodo/:id', async (req, res) => {
                 const message = new ExecutionMessage(
                     ExecutionStatus.ERROR,
                     ExecutionTypes.LIST,
-                    'Período não encontrado.',
+                    'Linha não encontrada.',
                     req.params,
                     []
                 )
@@ -25,7 +25,7 @@ router.get('/periodo/:id', async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Erro ao buscar período.',
+            'Erro ao buscar linha.',
             req.params,
             e.stack 
         )
@@ -33,4 +33,4 @@ router.get('/periodo/:id', async (req, res) => {
     }
 })
 
-export { router as listOnePeriodo }
+export { router as listOneLinha }

@@ -1,13 +1,13 @@
 import { check } from 'express-validator'
 import { toFormattedDate } from '@keeptargets/common'
-import { Periodo } from '../models/periodo.js'
+import { Linha } from '../models/linha.js'
 
 const compareDates = (value, { req }) => {
     return toFormattedDate(req.body.end) > toFormattedDate(req.body.start) 
 }
 
 const hasActive = async (value, { req }) => {
-    const result = await Periodo.find({periodo_status: 1})
+    const result = await Linha.find({linha_situacao: 1})
     const validation = result.length === 0 || result === undefined ? true: req.method === 'PUT' && result[0]._id.toString() === req.params.id? true: false  
     return validation
 }

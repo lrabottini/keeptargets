@@ -1,33 +1,38 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
-import { Periodo } from '../models/periodo.js'
+import { Linha } from '../models/linha.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
 
 const router = express.Router()
 
-router.put('/periodo/:id', fieldValidation, async (req, res) => {
+router.put('/linha/:id', async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await Periodo.findById(req.params.id)
-                .then((periodo) => {
+            await findById(req.params.id)
+                .then((linha) => {
                     periodo.set({
-                        periodo_name: req.body.name,
-                        periodo_start: toFormattedDate(req.body.start),
-                        periodo_end: toFormattedDate(req.body.end),
-                        periodo_status: req.body.status,
-                        periodo_lastModified: Date.now() 
+                        linha_fornecedor: mongoose.Types.ObjectId,
+                        linha_centro_de_custo: mongoose.Types.ObjectId,
+                        linha_tipo_de_despesa: mongoose.Types.ObjectId,
+                        linha_inicio_periodo: toFormattedDate(req.body.inicio),
+                        linha_fim_periodo: toFormattedDate(req.body.fim),
+                        linha_valor_anterior: 0,
+                        linha_valor: req.body.valor,
+                        linha_tipo_reajuste: req.body.tipo_reajuste,
+                        linha_valor_reajuste: req.body.valor_reajuste,
+                        linha_situacao: req.body.situacao
                     })
                     
-                    periodo.save()
+                    linha.save()
             
                     message = new ExecutionMessage(
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
-                        'Período atualizado com sucesso.',
+                        'Linha atualizado com sucesso.',
                         {
                             params: req.params,
                             attrs: req.body
@@ -39,7 +44,7 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
             message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
-                'Não foi possível atualizar período.',
+                'Não foi possível atualizar linha.',
                 {
                     params: req.params,
                     attrs: req.body
@@ -52,7 +57,7 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Erro ao atualizar período.',
+            'Erro ao atualizar linha.',
             {
                 params: req.params,
                 attrs: req.body
@@ -63,4 +68,4 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
     }
 })
 
-export { router as updatePeriodo }
+export { router as updateLinha }

@@ -3,29 +3,35 @@ import mongoose from 'mongoose'
 
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
-import { Periodo } from '../models/periodo.js'
+import { Linha } from '../models/linha.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
 
 const router = express.Router()
 
-router.post('/periodo', fieldValidation, async (req, res) => {
+router.post('/linha', async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
-            const periodo = new Periodo()
+            const linha = new Linha()
 
-            periodo.periodo_ciclo = new mongoose.Types.ObjectId(req.body.org)
-            periodo.periodo_name = req.body.name
-            periodo.periodo_start = toFormattedDate(req.body.start)
-            periodo.periodo_end = toFormattedDate(req.body.end)
-            periodo.periodo_status = req.body.status
+            linha.linha_versao = req.body.versao,
+            linha.linha_fornecedor = req.body.fornecedor,
+            linha.linha_centro_de_custo = req.body.cc,
+            linha.linha_tipo_de_despesa = req.body.despesa,
+            linha.linha_inicio_periodo = toFormattedDate(req.body.start),
+            linha.linha_fim_periodo = toFormattedDate(req.body.end),
+            linha.linha_valor_anterior = 0,
+            linha.linha_valor = req.body.valor_atual,
+            linha.linha_tipo_reajuste = req.body.tipo_reajuste,
+            linha.linha_valor_reajuste = req.body.valor_reajuste,
+            linha.linha_situacao = req.body.situacao
 
-            await periodo.save()
+            await linha.save()
             
             const message = new ExecutionMessage(
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
-                'Periodo criado com sucesso.',
+                'Linha criada com sucesso.',
                 req.body,
                 result.array()
             )
@@ -34,7 +40,7 @@ router.post('/periodo', fieldValidation, async (req, res) => {
             const message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
-                'Não foi possível criar período.',
+                'Não foi possível criar linha.',
                 req.body,
                 result.array()
             )
@@ -44,7 +50,7 @@ router.post('/periodo', fieldValidation, async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Erro ao criar periodo.',
+            'Erro ao criar linha.',
             req.params,
             e.stack 
         )
@@ -52,4 +58,4 @@ router.post('/periodo', fieldValidation, async (req, res) => {
     }
 })
 
-export { router as createPeriodo }
+export { router as createLinha }
