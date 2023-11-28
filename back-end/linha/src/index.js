@@ -27,14 +27,14 @@ const start = async () => {
         app.listen(process.env.PORT, () => {
             process.stdout.write(`Escutando na porta ${process.env.PORT}.\n`);
         })
+
+        process.on('SIGINT', function() {
+            console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+            process.exit(0);
+        });
     } catch (e) {
         process.stdout.write(e.stack + '\n');
     }
-
-    process.on('SIGINT', function() {
-        console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
-        process.exit(0);
-    });
 };
 
 start();
