@@ -11,7 +11,7 @@ const linhaSchema = new mongoose.Schema({
     linha_valor: mongoose.Types.Decimal128,
     linha_tipo_reajuste: Number,
     linha_valor_reajuste: mongoose.Types.Decimal128,
-    linha_situacao: Number,
+    linha_situacao: mongoose.Types.ObjectId,
     createdAt: {
         type: Date,
         default: Date.now()
@@ -87,13 +87,6 @@ linhaSchema.statics.findLinhas = async function (id) {
                     from: 'centro_de_custo',
                     localField: 'linha_centro_de_custo',
                     foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'cc_descr': 1
-                            }
-                        }
-                    ],
                     as: 'centro_de_custo',
                 }
             }
@@ -111,6 +104,22 @@ linhaSchema.statics.findLinhas = async function (id) {
                         }
                     ],
                     as: 'tipo_de_despesa',
+                }
+            }
+            /** Faz o lookup para trazer as informações da situação */
+            ,{
+                $lookup: {
+                    from: 'situacao',
+                    localField: 'linha_situacao',
+                    foreignField: '_id',
+                    pipeline:[
+                        {
+                            $project: {
+                                'sit_descr': 1
+                            }
+                        }
+                    ],
+                    as: 'situacao',
                 }
             }
             ,{
