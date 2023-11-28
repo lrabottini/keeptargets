@@ -30,6 +30,11 @@ const start = async () => {
     } catch (e) {
         process.stdout.write(e.stack + '\n');
     }
+
+    process.on('SIGINT', function() {
+        console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+        process.exit(0);
+    });
 };
 
 start();

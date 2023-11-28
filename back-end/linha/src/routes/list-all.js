@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/linha', async (req, res) => {
     try {
-        const linha = await Linha.findLinhas()
+        const linha = await Linha.findLinhas(req.query.versao)
 
         res.send(linha)
     } catch (e) {

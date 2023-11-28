@@ -60,12 +60,12 @@ const linhaSchema = new mongoose.Schema({
 linhaSchema.statics.findLinhas = async function (id) {
     const response = await this.aggregate([
             /** Faz o match para trazer o documento que corresponde ao 'id' informado */
-            // {
-            //     $match: {
-            //         _id: new mongoose.Types.ObjectId(id)
-            //     }
-            // }
-            // /** Faz o lookup para trazer as informações do fornecedor */
+            {
+                $match: {
+                    linha_versao: new mongoose.Types.ObjectId(id)
+                }
+            },
+            /** Faz o lookup para trazer as informações do fornecedor */
             {
                 $lookup: {
                     from: 'fornecedor',
@@ -125,7 +125,7 @@ linhaSchema.statics.findLinhas = async function (id) {
                 }
             }
     ]).exec()
-    return response[0]
+    return response
 }
 
 
