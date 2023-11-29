@@ -12,6 +12,8 @@ const linhaSchema = new mongoose.Schema({
     linha_tipo_reajuste: Number,
     linha_valor_reajuste: mongoose.Types.Decimal128,
     linha_situacao: mongoose.Types.ObjectId,
+    linha_classificacao: Number,
+    linha_observacao: String,
     createdAt: {
         type: Date,
         default: Date.now()
@@ -130,7 +132,8 @@ linhaSchema.statics.findLinhas = async function (id) {
                     linha_centro_de_custo: 0,
                     linha_tipo_de_despesa: 0,
                     linha_tipo_reajuste: 0,
-                    linha_valor_reajuste: 0
+                    linha_valor_reajuste: 0,
+                    linha_situacao: 0
                 }
             }
     ]).exec()
