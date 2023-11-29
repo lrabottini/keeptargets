@@ -15,16 +15,20 @@ router.post('/linha', async (req, res) => {
             const linha = new Linha()
 
             linha.linha_versao = req.body.versao,
-            linha.linha_fornecedor = req.body.fornecedor,
             linha.linha_centro_de_custo = req.body.cc,
             linha.linha_tipo_de_despesa = req.body.despesa,
+            linha.linha_estrutura = req.body.estrutura,
+            linha.linha_proprietario = req.body.proprietario,
+            linha.linha_fornecedor = req.body.fornecedor,
+            linha.linha_descricao = req.body.descricao,
             linha.linha_inicio_periodo = toFormattedDate(req.body.start),
             linha.linha_fim_periodo = toFormattedDate(req.body.end),
-            linha.linha_valor_anterior = 0,
-            linha.linha_valor = req.body.valor_atual,
+            linha.linha_valor_base = req.body.valor_base,
             linha.linha_tipo_reajuste = req.body.tipo_reajuste,
             linha.linha_valor_reajuste = req.body.valor_reajuste,
-            linha.linha_situacao = req.body.situacao
+            linha.linha_valor_final = req.body.valor_atual,
+            linha.linha_etapa = req.body.etapa,
+            linha.linha_observacao = req.body.obs
 
             await linha.save()
             
