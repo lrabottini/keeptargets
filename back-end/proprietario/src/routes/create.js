@@ -2,26 +2,26 @@ import express from 'express'
 
 import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
-import { Estrutura } from '../models/estrutura.js'
+import { Proprietario } from '../models/proprietario.js'
 
 const router = express.Router()
 
-router.post('/estrutura', async (req, res) => {
+router.post('/proprietario', async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
-            const estrutura = new Estrutura()
+            const proprietario = new Proprietario()
 
-            estrutura.estrut_cod = req.body.codigo
-            estrutura.estrut_descr = req.body.descricao
-            estrutura.estrut_parent = req.body.parent
+            proprietario.prop_cod = req.body.codigo
+            proprietario.prop_nome = req.body.nome
+            proprietario.prop_role = req.body.role
 
-            await estrutura.save()
+            await proprietario.save()
             
             const message = new ExecutionMessage(
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
-                'Estrutura criada com sucesso.',
+                'Proprietário criado com sucesso.',
                 req.body,
                 result.array()
             )
@@ -30,7 +30,7 @@ router.post('/estrutura', async (req, res) => {
             const message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
-                'Não foi possível criar estrutura.',
+                'Não foi possível criar proprietário.',
                 req.body,
                 result.array()
             )
@@ -40,7 +40,7 @@ router.post('/estrutura', async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Não foi possíve criar estrutura.',
+            'Não foi possíve criar proprietário.',
             req.params,
             e.stack 
         )
@@ -48,4 +48,4 @@ router.post('/estrutura', async (req, res) => {
     }
 })
 
-export { router as createEstrutura }
+export { router as createProprietario }

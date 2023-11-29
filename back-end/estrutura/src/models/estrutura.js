@@ -14,6 +14,6 @@ const estruturaSchema = new mongoose.Schema({
     },
 }, {collection: 'estrutura'})
 
-const Estrutura = mongoose.model('estrut', estruturaSchema)
+const Estrutura = mongoose.model('proprietario', estruturaSchema)
 
 export { Estrutura }
