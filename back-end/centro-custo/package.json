@@ -1,7 +1,7 @@
 {
-  "name": "tipo-despesa",
+  "name": "centro-custo",
   "version": "1.0.0",
-  "description": "Tipos de despesa.",
+  "description": "Centros de custo, para efeitos de organização contábil",
   "main": "index.js",
   "keywords": [],
   "author": "",
