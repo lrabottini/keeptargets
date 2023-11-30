@@ -28,7 +28,7 @@ router.post('/linha', async (req, res) => {
             linha.linha_reajuste.ativo = req.body.tipo_reajuste,
             linha.linha_reajuste.reajuste_percentual = req.body.reajuste_percentual,
             linha.linha_reajuste.reajuste_valor = req.body.reajuste_valor,
-            linha.linha_valor_final = req.body.valor_atual,
+            linha.linha_valor_final = req.body.valor_final,
             linha.linha_etapa = req.body.etapa,
             linha.linha_observacao = req.body.obs
 

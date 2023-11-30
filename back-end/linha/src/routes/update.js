@@ -29,7 +29,7 @@ router.put('/linha/:id', async (req, res) => {
                         // linha_reajuste.ativo = req.body.tipo_reajuste,
                         // linha_reajuste.reajuste_percentual = req.body.reajuste_percentual,
                         // linha_reajuste.reajuste_valor = req.body.reajuste_valor,
-                        linha_valor_final: req.body.valor_atual,
+                        linha_valor_final: req.body.valor_final,
                         linha_etapa: req.body.etapa,
                         linha_observacao: req.body.obs
                     })
