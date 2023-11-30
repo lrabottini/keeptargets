@@ -15,16 +15,23 @@ router.put('/linha/:id', async (req, res) => {
             await findById(req.params.id)
                 .then((linha) => {
                     periodo.set({
-                        linha_fornecedor: mongoose.Types.ObjectId,
-                        linha_centro_de_custo: mongoose.Types.ObjectId,
-                        linha_tipo_de_despesa: mongoose.Types.ObjectId,
-                        linha_inicio_periodo: toFormattedDate(req.body.inicio),
-                        linha_fim_periodo: toFormattedDate(req.body.fim),
-                        linha_valor_anterior: 0,
-                        linha_valor: req.body.valor,
-                        linha_tipo_reajuste: req.body.tipo_reajuste,
-                        linha_valor_reajuste: req.body.valor_reajuste,
-                        linha_situacao: req.body.situacao
+                        linha_versao: req.body.versao,
+                        linha_classificacao: req.body.classificacao,
+                        linha_centro_de_custo: req.body.cc,
+                        linha_tipo_de_despesa: req.body.despesa,
+                        linha_estrutura: req.body.estrutura,
+                        linha_proprietario: req.body.proprietario,
+                        linha_fornecedor: req.body.fornecedor,
+                        linha_descricao: req.body.descricao,
+                        linha_inicio_periodo: toFormattedDate(req.body.start),
+                        linha_fim_periodo: toFormattedDate(req.body.end),
+                        linha_valor_base: req.body.valor_base,
+                        // linha_reajuste.ativo = req.body.tipo_reajuste,
+                        // linha_reajuste.reajuste_percentual = req.body.reajuste_percentual,
+                        // linha_reajuste.reajuste_valor = req.body.reajuste_valor,
+                        linha_valor_final: req.body.valor_atual,
+                        linha_etapa: req.body.etapa,
+                        linha_observacao: req.body.obs
                     })
                     
                     linha.save()

@@ -2,6 +2,7 @@ import mongoose, { Schema, SchemaType } from "mongoose"
 
 const linhaSchema = new mongoose.Schema({
     linha_versao: mongoose.Types.ObjectId,
+    linha_classificacao: String,
     linha_centro_de_custo: mongoose.Types.ObjectId,
     linha_tipo_de_despesa: mongoose.Types.ObjectId,
     linha_estrutura: mongoose.Types.ObjectId,
@@ -11,8 +12,20 @@ const linhaSchema = new mongoose.Schema({
     linha_inicio_periodo: Date,
     linha_fim_periodo: Date,
     linha_valor_base: Number,
-    linha_tipo_reajuste: String,
-    linha_valor_reajuste: Number,
+    linha_reajuste: {
+        ativo: {
+            type: String,
+            default: "VALOR"
+        },
+        reajuste_valor: {
+            type: Number,
+            default: 0
+        },
+        reajuste_percentual: {
+            type: Number,
+            default: 0
+        }
+    },
     linha_valor_final: Number,
     linha_etapa: mongoose.Types.ObjectId,
     linha_observacao: String,
