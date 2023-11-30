@@ -1,10 +1,10 @@
 import express from 'express';
 
-import { createPeriodo } from './routes/create.js'
-import { deletePeriodo } from './routes/delete.js'
-import { listOnePeriodo } from './routes/list-one.js'
-import { listAllPeriodo } from './routes/list-all.js'
-import { updatePeriodo } from './routes/update.js'
+import { createVersao } from './routes/create.js'
+import { deleteVersao } from './routes/delete.js'
+import { listOneVersao } from './routes/list-one.js'
+import { listAllVersao } from './routes/list-all.js'
+import { updateVersao } from './routes/update.js'
 
 const app = express();
 
@@ -13,10 +13,10 @@ app.use(express.json());
 
 app.set('trust proxy', true);
 
-app.use(listOnePeriodo)
-app.use(listAllPeriodo)
-app.use(createPeriodo)
-app.use(deletePeriodo)
-app.use(updatePeriodo)
+app.use(listOneVersao)
+app.use(listAllVersao)
+app.use(createVersao)
+app.use(deleteVersao)
+app.use(updateVersao)
 
 export { app }

@@ -1,24 +1,23 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 
-import { Periodo } from '../models/periodo.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
-
+import { Versao } from '../models/versao.js'
 
 const router = express.Router()
 
-router.delete('/periodo/:id', async (req, res) => {
+router.delete('/versao/:id', async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await Periodo.deleteOne({ _id: req.params.id })
+            await Versao.deleteOne({ _id: req.params.id })
 
             message = new ExecutionMessage(
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.DELETE,
-                'Periodo excluído com sucesso.',
+                'Versão excluída com sucesso.',
                 req.params,
                 result.array()
             )
@@ -26,7 +25,7 @@ router.delete('/periodo/:id', async (req, res) => {
             message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
-                'Não foi possível excluir período.',
+                'Não foi possível excluir versão.',
                 req.params,
                 result.array()
             )
@@ -36,7 +35,7 @@ router.delete('/periodo/:id', async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionType.DELETE,
-            'Erro ao excluir período.',
+            'Erro ao excluir versão.',
             req.params,
             e.stack 
         )
@@ -44,4 +43,4 @@ router.delete('/periodo/:id', async (req, res) => {
     }
 })
 
-export { router as deletePeriodo }
+export { router as deleteVersao }

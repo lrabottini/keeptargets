@@ -1,33 +1,30 @@
 import express from 'express'
-import { validationResult } from 'express-validator'
-import { fieldValidation } from '../middleware/valida-chamada.js'
-import { Periodo } from '../models/periodo.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { Versao } from '../models/versao.js'
 
 const router = express.Router()
 
-router.put('/periodo/:id', fieldValidation, async (req, res) => {
+router.put('/versao/:id', async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await Periodo.findById(req.params.id)
-                .then((periodo) => {
-                    periodo.set({
-                        periodo_name: req.body.name,
-                        periodo_start: toFormattedDate(req.body.start),
-                        periodo_end: toFormattedDate(req.body.end),
-                        periodo_status: req.body.status,
-                        periodo_lastModified: Date.now() 
+            await Versao.findById(req.params.id)
+                .then((versao) => {
+                    versao.set({
+                        versao_nr: req.body.nr,
+                        versao_linhas: req.body.linhas,
+                        versao_valor_total: req.body.valor_total,
+                        versao_situacao: req.body.versao_situacao
                     })
                     
-                    periodo.save()
+                    versao.save()
             
                     message = new ExecutionMessage(
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
-                        'Período atualizado com sucesso.',
+                        'Versão atualizada com sucesso.',
                         {
                             params: req.params,
                             attrs: req.body
@@ -39,7 +36,7 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
             message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
-                'Não foi possível atualizar período.',
+                'Não foi possível atualizar versão.',
                 {
                     params: req.params,
                     attrs: req.body
@@ -52,7 +49,7 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Erro ao atualizar período.',
+            'Erro ao atualizar versão.',
             {
                 params: req.params,
                 attrs: req.body
@@ -63,4 +60,4 @@ router.put('/periodo/:id', fieldValidation, async (req, res) => {
     }
 })
 
-export { router as updatePeriodo }
+export { router as updateVersao }

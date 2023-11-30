@@ -1,31 +1,28 @@
 import express from 'express'
 import mongoose from 'mongoose'
 
-import { validationResult } from 'express-validator'
-import { fieldValidation } from '../middleware/valida-chamada.js'
-import { Periodo } from '../models/versao.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { Versao } from '../models/versao.js'
 
 const router = express.Router()
 
-router.post('/periodo', fieldValidation, async (req, res) => {
+router.post('/versao', async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
-            const periodo = new Periodo()
+            const versao = new Versao()
 
-            periodo.periodo_ciclo = new mongoose.Types.ObjectId(req.body.org)
-            periodo.periodo_name = req.body.name
-            periodo.periodo_start = toFormattedDate(req.body.start)
-            periodo.periodo_end = toFormattedDate(req.body.end)
-            periodo.periodo_status = req.body.status
+            versao.versao_nr = req.body.versao_nr
+            versao.versao_linhas = 0
+            versao.versao_valor_total = 0
+            versao.versao_situacao = req.body.situacao
 
-            await periodo.save()
+            await versao.save()
             
             const message = new ExecutionMessage(
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
-                'Periodo criado com sucesso.',
+                'Versão criada com sucesso.',
                 req.body,
                 result.array()
             )
@@ -34,7 +31,7 @@ router.post('/periodo', fieldValidation, async (req, res) => {
             const message = new ExecutionMessage(
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
-                'Não foi possível criar período.',
+                'Não foi possível criar versão.',
                 req.body,
                 result.array()
             )
@@ -44,7 +41,7 @@ router.post('/periodo', fieldValidation, async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Erro ao criar periodo.',
+            'Erro ao criar versão.',
             req.params,
             e.stack 
         )
@@ -52,4 +49,4 @@ router.post('/periodo', fieldValidation, async (req, res) => {
     }
 })
 
-export { router as createPeriodo }
+export { router as createVersao }

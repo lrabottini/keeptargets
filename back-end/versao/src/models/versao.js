@@ -1,9 +1,10 @@
-import mongoose from "mongoose"
+import mongoose, { SchemaTypes } from "mongoose"
 
 const versaoSchema = new mongoose.Schema({
     versao_nr: String,
     versao_linhas: String,
-    versao_total: Number,
+    versao_valor_total: Number,
+    versao_situacao: SchemaTypes.ObjectId, 
     createdAt: {
         type: Date,
         default: Date.now()

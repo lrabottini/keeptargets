@@ -1,19 +1,19 @@
 import express from 'express'
 import { ExecutionMessage, ExecutionTypes, ExecutionStatus } from '@keeptargets/common'
-import { Periodo } from '../models/periodo.js'
+import { Versao } from '../models/versao.js'
 
 const router = express.Router()
 
-router.get('/periodo', async (req, res) => {
+router.get('/versao', async (req, res) => {
     try {
-        const periodo = await Periodo.find()
+        const versao = await Versao.find()
 
-        res.send(periodo)
+        res.send(versao)
     } catch (e) {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
-            'Erro ao buscar períodos.',
+            'Erro ao buscar versões.',
             req.params,
             e.stack 
         )
@@ -21,4 +21,4 @@ router.get('/periodo', async (req, res) => {
     }
 })
 
-export { router as listAllPeriodo }
+export { router as listAllVersao }
