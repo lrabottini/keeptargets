@@ -22,11 +22,20 @@ const linhaSchema = new mongoose.Schema({
             default: 0
         },
         reajuste_percentual: {
+            type: mongoose.Types.Decimal128,
+            default: 0
+        }
+    },
+    linha_valor_final: {
+        valor_final_valor: {
+            type: Number,
+            default: 0
+        },
+        valor_final_perc: {
             type: Number,
             default: 0
         }
     },
-    linha_valor_final: Number,
     linha_etapa: mongoose.Types.ObjectId,
     linha_observacao: String,
     createdAt: {
@@ -145,7 +154,6 @@ linhaSchema.statics.findLinha = async function (id) {
             }
             ,{
                 $project: {
-                    linha_versao: 0,
                     linha_centro_de_custo: 0,
                     linha_tipo_de_despesa: 0,
                     linha_estrutura: 0,
