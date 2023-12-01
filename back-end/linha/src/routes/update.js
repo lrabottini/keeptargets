@@ -12,9 +12,9 @@ router.put('/linha/:id', async (req, res) => {
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await findById(req.params.id)
+            await Linha.findById(req.params.id)
                 .then((linha) => {
-                    periodo.set({
+                    linha.set({
                         linha_versao: req.body.versao,
                         linha_classificacao: req.body.classificacao,
                         linha_centro_de_custo: req.body.cc,
@@ -26,9 +26,11 @@ router.put('/linha/:id', async (req, res) => {
                         linha_inicio_periodo: toFormattedDate(req.body.start),
                         linha_fim_periodo: toFormattedDate(req.body.end),
                         linha_valor_base: req.body.valor_base,
-                        // linha_reajuste.ativo = req.body.tipo_reajuste,
-                        // linha_reajuste.reajuste_percentual = req.body.reajuste_percentual,
-                        // linha_reajuste.reajuste_valor = req.body.reajuste_valor,
+                        linha_reajuste: {
+                            tipo_reajuste: req.body.tipo_reajuste,
+                            reajuste_percentual: req.body.reajuste_percentual,
+                            reajuste_valor: req.body.reajuste_valor
+                        },
                         linha_valor_final: req.body.valor_final,
                         linha_etapa: req.body.etapa,
                         linha_observacao: req.body.obs

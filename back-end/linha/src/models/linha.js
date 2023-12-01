@@ -13,7 +13,7 @@ const linhaSchema = new mongoose.Schema({
     linha_fim_periodo: Date,
     linha_valor_base: Number,
     linha_reajuste: {
-        ativo: {
+        tipo_reajuste: {
             type: String,
             default: "VALOR"
         },
