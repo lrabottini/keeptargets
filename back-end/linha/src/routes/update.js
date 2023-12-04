@@ -1,6 +1,5 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-import { fieldValidation } from '../middleware/valida-chamada.js'
 import { Linha } from '../models/linha.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
 
@@ -18,7 +17,7 @@ router.put('/linha/:id', async (req, res) => {
                         linha_versao: req.body.versao,
                         linha_classificacao: req.body.classificacao,
                         linha_centro_de_custo: req.body.cc,
-                        linha_tipo_de_despesa: req.body.despesa,
+                        linha_tipo_de_despesa: req.body.tipo_de_despesa,
                         linha_estrutura: req.body.estrutura,
                         linha_proprietario: req.body.proprietario,
                         linha_fornecedor: req.body.fornecedor,
@@ -31,13 +30,15 @@ router.put('/linha/:id', async (req, res) => {
                             reajuste_percentual: req.body.reajuste_percentual,
                             reajuste_valor: req.body.reajuste_valor
                         },
-                        linha_valor_final: req.body.valor_final,
+                        linha_valor_final: {
+                            valor_final_perc: req.body.valor_final_perc,
+                            valor_final_valor: req.body.valor_final_valor,
+                        },
                         linha_etapa: req.body.etapa,
                         linha_observacao: req.body.obs
                     })
                     
                     linha.save()
-            
                     message = new ExecutionMessage(
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
