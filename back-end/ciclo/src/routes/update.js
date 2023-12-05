@@ -2,7 +2,7 @@ import express from 'express'
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
 import { Ciclo } from '../models/ciclo.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
 
 const router = express.Router()
 
@@ -25,6 +25,7 @@ router.put('/ciclo/:id', fieldValidation, async (req, res) => {
                     ciclo.save()
             
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Ciclo atualizado com sucesso.',
@@ -37,6 +38,7 @@ router.put('/ciclo/:id', fieldValidation, async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar ciclo.',
@@ -50,9 +52,10 @@ router.put('/ciclo/:id', fieldValidation, async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Erro ao atualizar ciclo.',
+            'Não foi possível atualizar ciclo.',
             {
                 params: req.params,
                 attrs: req.body

@@ -2,13 +2,13 @@ import express from 'express'
 import mongoose from 'mongoose'
 
 import { validationResult } from 'express-validator'
-import { fieldValidation } from '../middleware/valida-chamada.js'
+import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
 import { Ciclo } from '../models/ciclo.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
 
 const router = express.Router()
 
-router.post('/ciclo', fieldValidation, async (req, res) => {
+router.post('/ciclo', fieldValidation, hasOrg, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
@@ -23,6 +23,7 @@ router.post('/ciclo', fieldValidation, async (req, res) => {
             await ciclo.save()
             
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
                 'Ciclo criado com sucesso.',
@@ -32,6 +33,7 @@ router.post('/ciclo', fieldValidation, async (req, res) => {
             res.send(message)
         } else {
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
                 'Não foi possível criar ciclo.',
@@ -44,7 +46,7 @@ router.post('/ciclo', fieldValidation, async (req, res) => {
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Erro ao criar ciclo.',
+            'Não foi possível criar ciclo.',
             req.params,
             e.stack 
         )

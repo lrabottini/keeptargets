@@ -1,5 +1,5 @@
 import express from 'express'
-import { ExecutionMessage, ExecutionTypes, ExecutionStatus } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionTypes, ExecutionStatus, MessageLevel } from '@keeptargets/common'
 import { Ciclo } from '../models/ciclo.js'
 
 const router = express.Router()
@@ -11,6 +11,7 @@ router.get('/ciclo', async (req, res) => {
         res.send(ciclo)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Erro ao buscar ciclos.',
