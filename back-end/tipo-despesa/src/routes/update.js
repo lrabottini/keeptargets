@@ -1,11 +1,12 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { validaCampos } from '../middleware/valida-chamada.js'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { TipoDespesa } from '../models/tipo-despesa.js'
 
 const router = express.Router()
 
-router.put('/tipodespesa/:id', async (req, res) => {
+router.put('/tipodespesa/:id', validaCampos, async (req, res) => {
     try {
         let message = ''
 
@@ -21,6 +22,7 @@ router.put('/tipodespesa/:id', async (req, res) => {
                     tipoDespesa.save()
             
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Tipo de despesa atualizado com sucesso.',
@@ -33,6 +35,7 @@ router.put('/tipodespesa/:id', async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar tipo de despesa.',
@@ -46,6 +49,7 @@ router.put('/tipodespesa/:id', async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
             'Erro ao atualizar tipo de despesa.',

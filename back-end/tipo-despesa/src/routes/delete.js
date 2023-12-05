@@ -1,12 +1,13 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
+import { validaUso } from '../middleware/valida-chamada.js'
 
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { TipoDespesa } from '../models/tipo-despesa.js'
 
 const router = express.Router()
 
-router.delete('/tipodespesa/:id', async (req, res) => {
+router.delete('/tipodespesa/:id', validaUso, async (req, res) => {
     try {
         let message = ''
 
@@ -16,6 +17,7 @@ router.delete('/tipodespesa/:id', async (req, res) => {
 
             if (d.deletedCount === 0) {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.DELETE,
                     'Tipo de despesa não encontrada.',
@@ -24,6 +26,7 @@ router.delete('/tipodespesa/:id', async (req, res) => {
                 )
             } else {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_INFO,
                     ExecutionStatus.SUCCESS,
                     ExecutionTypes.DELETE,
                     'Tipo de despesa excluída com sucesso.',
@@ -33,6 +36,7 @@ router.delete('/tipodespesa/:id', async (req, res) => {
             }
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
                 'Não foi possível excluir tipo de despesa.',
@@ -43,6 +47,7 @@ router.delete('/tipodespesa/:id', async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Não foi possível excluir tipo de despesa.',
