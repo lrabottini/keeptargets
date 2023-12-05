@@ -1,7 +1,8 @@
 import { format } from 'date-fns'
 
 class ExecutionMessage {
-    constructor (messageType, action, messageDesc, attrs, errors) {
+    constructor (level, messageType, action, messageDesc, attrs, errors) {
+        this.level = level
         this.date = format(Date.now(), 'dd/MM/yyyy HH:mm:ss')
         this.action = action
         this.messageType = messageType
