@@ -1,10 +1,12 @@
 import express from 'express'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { validationResult } from 'express-validator'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
+import { fieldValidation, childrenValidation } from '../middleware/valida-chamada.js'
 
 const router = express.Router()
 
-router.put('/versao/:id', async (req, res) => {
+router.put('/versao/:id', fieldValidation, childrenValidation, async (req, res) => {
     try {
         let message = ''
 
@@ -13,15 +15,17 @@ router.put('/versao/:id', async (req, res) => {
             await Versao.findById(req.params.id)
                 .then((versao) => {
                     versao.set({
-                        versao_nr: req.body.nr,
+                        versao_nome: req.body.nome,
+                        versao_situacao: req.body.situacao,
                         versao_linhas: req.body.linhas,
                         versao_valor_total: req.body.valor_total,
-                        versao_situacao: req.body.versao_situacao
+                        lastModified: Date.now()
                     })
                     
                     versao.save()
             
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Versão atualizada com sucesso.',
@@ -34,6 +38,7 @@ router.put('/versao/:id', async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar versão.',
@@ -47,9 +52,10 @@ router.put('/versao/:id', async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Erro ao atualizar versão.',
+            'Não foi possível atualizar versão.',
             {
                 params: req.params,
                 attrs: req.body

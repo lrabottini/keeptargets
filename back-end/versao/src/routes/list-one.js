@@ -1,5 +1,5 @@
 import express from 'express'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
 
 const router = express.Router()
@@ -12,6 +12,7 @@ router.get('/versao/:id', async (req, res) => {
             })
             .catch(() => {
                 const message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.LIST,
                     'Versão não encontrada.',
@@ -23,9 +24,10 @@ router.get('/versao/:id', async (req, res) => {
 
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Erro ao buscar versão.',
+            'Não foi possível buscar versão.',
             req.params,
             e.stack 
         )

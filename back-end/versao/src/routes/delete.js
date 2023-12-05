@@ -1,12 +1,13 @@
 import express from 'express'
+import { childrenValidation } from '../middleware/valida-chamada.js'
 import { validationResult } from 'express-validator'
 
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
 
 const router = express.Router()
 
-router.delete('/versao/:id', async (req, res) => {
+router.delete('/versao/:id', childrenValidation, async (req, res) => {
     try {
         let message = ''
 
@@ -15,6 +16,7 @@ router.delete('/versao/:id', async (req, res) => {
             await Versao.deleteOne({ _id: req.params.id })
 
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.DELETE,
                 'Versão excluída com sucesso.',
@@ -23,6 +25,7 @@ router.delete('/versao/:id', async (req, res) => {
             )
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
                 'Não foi possível excluir versão.',
@@ -33,9 +36,10 @@ router.delete('/versao/:id', async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionType.DELETE,
-            'Erro ao excluir versão.',
+            'Não foi possível excluir versão.',
             req.params,
             e.stack 
         )
