@@ -1,7 +1,7 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 
 const router = express.Router()
@@ -23,6 +23,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
                     centrocusto.save()
             
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Centro de custo atualizado com sucesso.',
@@ -35,6 +36,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar centro de custo.',
@@ -48,6 +50,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
         res.send(message)
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
             'Não foi possível atualizar centro de custo.',

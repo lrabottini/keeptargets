@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { validationResult } from 'express-validator'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
 
@@ -21,6 +21,7 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
             await centroCusto.save()
             
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
                 'Centro de custo criado com sucesso.',
@@ -30,6 +31,7 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
             res.send(message)
         } else {
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
                 'Não foi possível criar centro de custo.',
@@ -40,6 +42,7 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
         }
     } catch (e) {
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Erro ao criar centro de custo.',

@@ -1,6 +1,6 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 import { validaUso } from '../middleware/valida-chamada.js'
 
@@ -16,6 +16,7 @@ router.delete('/centrocusto/:id', validaUso, async (req, res) => {
 
             if (d.deletedCount === 0) {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.DELETE,
                     'Centro de custo não encontrado.',
@@ -24,6 +25,7 @@ router.delete('/centrocusto/:id', validaUso, async (req, res) => {
                 )
             } else {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_INFO,
                     ExecutionStatus.SUCCESS,
                     ExecutionTypes.DELETE,
                     'Centro de custo excluído com sucesso.',
@@ -33,6 +35,7 @@ router.delete('/centrocusto/:id', validaUso, async (req, res) => {
             }
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
                 'Não foi possível excluir entro de custo.',
