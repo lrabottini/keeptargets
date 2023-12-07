@@ -18,9 +18,9 @@ const hasActive = async (value, { req }) => {
     const validation = value === 'ENCERRADO'?
         true: result.length === 0 || result === undefined ? 
             true : req.method === 'PUT'?
-                result[0]._id.toString() === req.params.id?
+                true: result[0]._id.toString() === req.params.id?
                     true: value === "INATIVO"? 
-                        true : false : false
+                        true : false
 
     return validation? Promise.resolve() : Promise.reject(new Error('Já existe um ciclo ativo.'))
 }
