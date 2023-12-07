@@ -8,13 +8,14 @@ const compareDates = (value, { req }) => {
 
 const hasActive = async (value, { req }) => {
     /** Consulta se já existe um ciclo ativo */
-    const result = await Ciclo.find({ciclo_status: 1}).exec()
+    const result = await Ciclo.find({ciclo_status: 'ATIVO'}).exec()
 
     /** Caso não exista ciclo ativo, retorna TRUE para a validação
         Caso exista ciclo ativo, a ação seja um UPDATE e o ciclo ativo é o mesmo ciclo que está sendo editado, retorna TRUE para a validação
 
         Retorna FALSE caso as duas condições acima sejam inválidas */
-    const validation = result.length === 0 || result === undefined ? true : req.method ===  'POST' && value === 0? true : req.method === 'PUT' && result[0]._id.toString() === req.params.id
+    const validation = result.length === 0 || result === undefined ? 
+        true : req.method ===  'POST' && value === 0? true : req.method === 'PUT' && result[0]._id.toString() === req.params.id
 
     return validation? Promise.resolve() : Promise.reject(new Error('Já existe um ciclo ativo.'))
 }
