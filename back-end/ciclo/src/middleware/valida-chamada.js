@@ -15,7 +15,10 @@ const hasActive = async (value, { req }) => {
 
         Retorna FALSE caso as duas condições acima sejam inválidas */
     const validation = result.length === 0 || result === undefined ? 
-        true : req.method ===  'POST' && value === 0? true : req.method === 'PUT' && result[0]._id.toString() === req.params.id
+        true : req.method === 'PUT'?
+            result[0]._id.toString() === req.params.id?
+                true: value === "INATIVO"? 
+                    true : false : false
 
     return validation? Promise.resolve() : Promise.reject(new Error('Já existe um ciclo ativo.'))
 }
