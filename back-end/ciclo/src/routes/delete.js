@@ -49,7 +49,7 @@ router.delete('/ciclo/:id', childrenValidation, async (req, res) => {
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
-            ExecutionType.DELETE,
+            ExecutionTypes.DELETE,
             'Não foi possível excluir ciclo.',
             req.params,
             e.stack 
