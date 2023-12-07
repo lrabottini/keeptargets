@@ -1,6 +1,7 @@
 import mongoose, { SchemaTypes } from "mongoose"
 
 const centroCustoSchema = new mongoose.Schema({
+    centrocusto_org: mongoose.Types.ObjectId,
     centrocusto_cod: String,
     centrocusto_descr: String,
     centrocusto_parent: SchemaTypes.Mixed,

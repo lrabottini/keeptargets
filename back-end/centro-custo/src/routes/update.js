@@ -1,11 +1,12 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
+import { fieldValidation } from '../middleware/valida-chamada.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 
 const router = express.Router()
 
-router.put('/centrocusto/:id', async (req, res) => {
+router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
     try {
         let message = ''
 

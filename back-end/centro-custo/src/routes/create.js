@@ -3,15 +3,17 @@ import express from 'express'
 import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
+import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
 
 const router = express.Router()
 
-router.post('/centrocusto', async (req, res) => {
+router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
             const centroCusto = new CentroCusto()
 
+            centroCusto.centrocusto_org = req.body.org
             centroCusto.centrocusto_cod = req.body.codigo
             centroCusto.centrocusto_descr = req.body.descricao
             centroCusto.centrocusto_parent = req.body.parent

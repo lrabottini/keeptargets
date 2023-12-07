@@ -4,9 +4,9 @@ import { CentroCusto } from '../models/centro-custo.js'
 
 const router = express.Router()
 
-router.get('/centrocusto', async (req, res) => {
+router.get('/centrocusto/all/:org', async (req, res) => {
     try {
-        const centrocusto = await CentroCusto.find()
+        const centrocusto = await CentroCusto.find({centrocusto_org: req.params.org})
 
         res.send(centrocusto)
     } catch (e) {

@@ -1,12 +1,12 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
+import { validaUso } from '../middleware/valida-chamada.js'
 
 const router = express.Router()
 
-router.delete('/centrocusto/:id', async (req, res) => {
+router.delete('/centrocusto/:id', validaUso, async (req, res) => {
     try {
         let message = ''
 
