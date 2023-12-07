@@ -1,6 +1,7 @@
 import { check } from 'express-validator'
 import { toFormattedDate } from '@keeptargets/common'
 import { Ciclo } from '../models/ciclo.js'
+import mongoose from 'mongoose'
 
 const compareDates = (value, { req }) => {
     return toFormattedDate(req.body.end) >= toFormattedDate(req.body.start) 
@@ -24,6 +25,21 @@ const hasActive = async (value, { req }) => {
     return validation? Promise.resolve() : Promise.reject(new Error('Já existe um ciclo ativo.'))
 }
 
+const hasChildren = async (value, { req }) => {
+    /** Consulta se a versão possui filhos */
+    const result = await Ciclo.findById(new mongoose.Types.ObjectId(req.params.id)).exec()
+
+    /** Caso o ciclo não possua versões, retorna TRUE para a validação
+        
+    Retorna FALSE se a condição acima não for atendida */
+    return result.ciclo_versoes === 0? Promise.resolve() : 
+                                       Promise.reject(new Error('Ciclo possui versões criadas. Necessário excluir as versões antes de excluir o ciclo.'))
+}
+
+const childrenValidation = [
+    check('versoes').custom(hasChildren)
+]
+
 const hasOrg = [
     check('org').trim().notEmpty().withMessage('Organização não informada.')
 ]
@@ -36,4 +52,4 @@ const fieldValidation = [
     check('status').custom(hasActive)
 ]
 
-export { fieldValidation, hasOrg }
+export { fieldValidation, hasOrg, childrenValidation }

@@ -1,5 +1,6 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
+import { childrenValidation } from '../middleware/valida-chamada.js'
 
 import { Ciclo } from '../models/ciclo.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
@@ -7,7 +8,7 @@ import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from 
 
 const router = express.Router()
 
-router.delete('/ciclo/:id', async (req, res) => {
+router.delete('/ciclo/:id', childrenValidation, async (req, res) => {
     try {
         let message = ''
 

@@ -6,6 +6,10 @@ const cicloSchema = new mongoose.Schema({
     ciclo_start: Date,
     ciclo_end: Date,
     ciclo_status: String,
+    ciclo_versoes: {
+        type: Number,
+        default: 0
+    },
     createdAt: {
         type: Date,
         default: Date.now()
