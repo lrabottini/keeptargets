@@ -44,7 +44,8 @@ const validaUso = [
 
 const fieldValidation = [
     check('descricao').trim().notEmpty().withMessage('Descrição não informada.'),
-    check('codigo').trim().notEmpty().withMessage('Código não informado.')
+    check('codigo').trim().notEmpty().withMessage('Código não informado.'),
+    check('parent').trim().notEmpty().withMessage('Parent não informado.')
 ]
 
 export { fieldValidation, hasOrg, validaUso }
