@@ -5,7 +5,7 @@ const cicloSchema = new mongoose.Schema({
     ciclo_name: String,
     ciclo_start: Date,
     ciclo_end: Date,
-    ciclo_status: Number,
+    ciclo_status: String,
     createdAt: {
         type: Date,
         default: Date.now()

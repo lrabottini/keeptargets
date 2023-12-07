@@ -4,9 +4,9 @@ import { Ciclo } from '../models/ciclo.js'
 
 const router = express.Router()
 
-router.get('/ciclo', async (req, res) => {
+router.get('/ciclo/', async (req, res) => {
     try {
-        const ciclo = await Ciclo.find()
+        const ciclo = await Ciclo.find({ ciclo_org: req.params.org })
 
         res.send(ciclo)
     } catch (e) {
