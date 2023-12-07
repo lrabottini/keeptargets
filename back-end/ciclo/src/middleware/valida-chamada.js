@@ -14,11 +14,12 @@ const hasActive = async (value, { req }) => {
         Caso exista ciclo ativo, a ação seja um UPDATE e o ciclo ativo é o mesmo ciclo que está sendo editado, retorna TRUE para a validação
 
         Retorna FALSE caso as duas condições acima sejam inválidas */
-    const validation = result.length === 0 || result === undefined ? 
-        true : req.method === 'PUT'?
-            result[0]._id.toString() === req.params.id?
-                true: value === "INATIVO"? 
-                    true : false : false
+    const validation = value === 'ENCERRADO'?
+        true: result.length === 0 || result === undefined ? 
+            true : req.method === 'PUT'?
+                result[0]._id.toString() === req.params.id?
+                    true: value === "INATIVO"? 
+                        true : false : false
 
     return validation? Promise.resolve() : Promise.reject(new Error('Já existe um ciclo ativo.'))
 }
