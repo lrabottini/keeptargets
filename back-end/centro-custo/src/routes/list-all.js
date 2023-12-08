@@ -4,11 +4,35 @@ import { CentroCusto } from '../models/centro-custo.js'
 
 const router = express.Router()
 
+function aplanarEstrutura(hierarquia) {
+    const flatHierarchy = [];
+
+    function aplanar(item, depth) {
+        const { _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, children } = item;
+        flatHierarchy.push({ _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, depth });
+        
+        if (children && children.length > 0) {
+            children.forEach(child => aplanar(child, depth + 1));
+        }
+    }
+
+    hierarquia.forEach(item => aplanar(item, 0));
+    
+    return flatHierarchy;
+}
+
+// Sua estrutura hierárquica
+const estruturaHierarquica = [
+    // ... a estrutura fornecida anteriormente ...
+];
+
 router.get('/centrocusto/all/:org', async (req, res) => {
     try {
         const centrocusto = await CentroCusto.returnTree(req.params.org)
 
-        res.send(centrocusto)
+        const estruturaAplanada = aplanarEstrutura(centrocusto);
+        
+        res.send(estruturaAplanada)
     } catch (e) {
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
