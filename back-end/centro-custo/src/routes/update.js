@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -17,7 +18,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
                     centrocusto.set({
                         centrocusto_cod: req.body.codigo,
                         centrocusto_descr: req.body.descricao,
-                        centrocusto_parent: req.body.parent
+                        centrocusto_parent: new mongoose.Types.ObjectId(req.body.parent)
                     })
                     
                     centrocusto.save()

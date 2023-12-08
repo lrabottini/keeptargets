@@ -130,7 +130,8 @@ centroCustoSchema.statics.returnTree = async function (id) {
         },
         {
             $sort: {
-                "level": 1
+                "level": 1,
+                "_id": 1
             }
 
         }
