@@ -43,7 +43,8 @@ centroCustoSchema.statics.returnTree = async function (id) {
         ,{
             $unwind: {
               path: "$children",
-              preserveNullAndEmptyArrays: true
+              preserveNullAndEmptyArrays: true,
+              includeArrayIndex: "index"
             }
         }
         ,{
@@ -105,7 +106,7 @@ centroCustoSchema.statics.returnTree = async function (id) {
                                                                     input: "$$prev",
                                                                     as: "e",
                                                                     cond: {
-                                                                        $eq: ["$$e.parent_id", "$$this.id"]
+                                                                        $eq: ["$$e.centrocusto_parent", "$$this._id"]
                                                                     }
                                                                 }
                                                             }
@@ -129,7 +130,7 @@ centroCustoSchema.statics.returnTree = async function (id) {
         },
         {
             $sort: {
-                "centrocusto_cod": 1
+                "level": 1
             }
 
         }
