@@ -4,6 +4,7 @@ import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -16,7 +17,7 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
             centroCusto.centrocusto_org = req.body.org
             centroCusto.centrocusto_cod = req.body.codigo
             centroCusto.centrocusto_descr = req.body.descricao
-            centroCusto.centrocusto_parent = req.body.parent
+            centroCusto.centrocusto_parent = Number(req.body.parent) === 0? Number(req.body.parent) : new mongoose.Types.ObjectId(req.body.parent)
 
             await centroCusto.save()
             

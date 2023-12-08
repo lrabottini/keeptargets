@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/centrocusto/all/:org', async (req, res) => {
     try {
-        const centrocusto = await CentroCusto.find({centrocusto_org: req.params.org})
+        const centrocusto = await CentroCusto.returnTree(req.params.org)
 
         res.send(centrocusto)
     } catch (e) {
