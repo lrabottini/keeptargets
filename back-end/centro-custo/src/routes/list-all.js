@@ -6,11 +6,12 @@ const router = express.Router()
 
 function aplanarEstrutura(hierarquia) {
     const flatHierarchy = [];
-
+    let ordem = 1
     function aplanar(item, depth) {
         const { _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, children } = item;
         const centrocusto_hasChildren = children.length > 0
-        flatHierarchy.push({ _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, centrocusto_hasChildren, depth });
+        ordem = ordem + 1 
+        flatHierarchy.push({ _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, centrocusto_hasChildren, ordem, depth });
         
         if (children && children.length > 0) {
             children.forEach(child => aplanar(child, depth + 1));
@@ -21,11 +22,6 @@ function aplanarEstrutura(hierarquia) {
     
     return flatHierarchy;
 }
-
-// Sua estrutura hierárquica
-const estruturaHierarquica = [
-    // ... a estrutura fornecida anteriormente ...
-];
 
 router.get('/centrocusto/all/:org', async (req, res) => {
     try {
