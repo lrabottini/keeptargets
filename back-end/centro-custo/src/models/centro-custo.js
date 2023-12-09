@@ -5,6 +5,7 @@ const centroCustoSchema = new mongoose.Schema({
     centrocusto_cod: String,
     centrocusto_descr: String,
     centrocusto_parent: SchemaTypes.Mixed,
+    centrocusto_hasChildren: Boolean,
     createdAt: {
         type: Date,
         default: Date.now()
@@ -59,6 +60,7 @@ centroCustoSchema.statics.returnTree = async function (id) {
                 centrocusto_descr: { $first: "$centrocusto_descr" },
                 centrocusto_cod: { $first: "$centrocusto_cod" },
                 centrocusto_org: { $first: "$centrocusto_org" },
+                centrocusto_hasChildren: { $first: "$centrocusto_hasChildren" },
                 children: { $push: "$children" }
             }
         }

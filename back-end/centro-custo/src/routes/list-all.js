@@ -9,7 +9,8 @@ function aplanarEstrutura(hierarquia) {
 
     function aplanar(item, depth) {
         const { _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, children } = item;
-        flatHierarchy.push({ _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, depth });
+        const centrocusto_hasChildren = children.length > 0
+        flatHierarchy.push({ _id, centrocusto_parent, centrocusto_descr, centrocusto_cod, centrocusto_org, centrocusto_hasChildren, depth });
         
         if (children && children.length > 0) {
             children.forEach(child => aplanar(child, depth + 1));
