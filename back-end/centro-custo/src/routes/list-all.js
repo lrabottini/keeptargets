@@ -29,6 +29,7 @@ router.get('/centrocusto/all/:org', async (req, res) => {
 
         const estruturaAplanada = aplanarEstrutura(centrocusto);
         
+        console.log('realizou consulta')
         res.send(estruturaAplanada)
     } catch (e) {
         const message = new ExecutionMessage(
