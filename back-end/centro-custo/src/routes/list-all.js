@@ -35,7 +35,7 @@ function aplanarEstrutura(hierarquia) {
     const flatHierarchy = [];
     const prefixStack = [];
 
-    function aplanar(item, prefix) {
+    function aplanar(item, prefix, level) {
         const { _id, children, ...rest } = item;
 
         const currentSuffix = flatHierarchy.length + 1;
@@ -46,17 +46,18 @@ function aplanarEstrutura(hierarquia) {
             ...rest,
             suffix: currentSuffix,
             prefix: Number(currentPrefix),
+            level,
         });
 
         if (children && children.length > 0) {
             children.forEach((child, index) => {
-                aplanar(child, currentPrefix);
+                aplanar(child, currentPrefix, level + 1);
             });
         }
     }
 
     hierarquia.forEach(item => {
-        aplanar(item);
+        aplanar(item, '', 0);
     });
 
     return flatHierarchy;
