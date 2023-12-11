@@ -47,7 +47,7 @@ function aplanarEstrutura(hierarquia) {
             _id,
             ...rest,
             suffix: currentSuffix,
-            prefix: Number(currentPrefix),
+            prefix: currentPrefix.toString(),
             level,
             hasChildren,
         });
