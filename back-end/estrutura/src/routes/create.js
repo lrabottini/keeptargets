@@ -1,24 +1,28 @@
 import express from 'express'
 
 import { validationResult } from 'express-validator'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Estrutura } from '../models/estrutura.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.post('/estrutura', async (req, res) => {
+router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
             const estrutura = new Estrutura()
 
-            estrutura.estrut_cod = req.body.codigo
-            estrutura.estrut_descr = req.body.descricao
-            estrutura.estrut_parent = req.body.parent
+            estrutura.estrutura_org = req.body.org 
+            estrutura.estrutura_cod = req.body.codigo
+            estrutura.estrutura_descr = req.body.descricao
+            estrutura.estrutura_parent = Number(req.body.parent) === 0? Number(req.body.parent) : new mongoose.Types.ObjectId(req.body.parent)
 
             await estrutura.save()
             
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
                 'Estrutura criada com sucesso.',
@@ -28,6 +32,7 @@ router.post('/estrutura', async (req, res) => {
             res.send(message)
         } else {
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
                 'Não foi possível criar estrutura.',
@@ -37,12 +42,21 @@ router.post('/estrutura', async (req, res) => {
             res.send(message)
         }
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Não foi possíve criar estrutura.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }

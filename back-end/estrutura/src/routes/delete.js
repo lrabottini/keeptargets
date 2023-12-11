@@ -1,7 +1,7 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { validaUso } from '../../../centro-custo/src/middleware/valida-chamada.js'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Estrutura } from '../models/estrutura.js'
 
 const router = express.Router()
@@ -16,6 +16,7 @@ router.delete('/estrutura/:id', async (req, res) => {
 
             if (d.deletedCount === 0) {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.DELETE,
                     'Estrutura não encontrada.',
@@ -24,6 +25,7 @@ router.delete('/estrutura/:id', async (req, res) => {
                 )
             } else {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_INFO,
                     ExecutionStatus.SUCCESS,
                     ExecutionTypes.DELETE,
                     'Estrutura excluída com sucesso.',
@@ -33,6 +35,7 @@ router.delete('/estrutura/:id', async (req, res) => {
             }
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
                 'Não foi possível excluir estrutura.',
@@ -42,12 +45,21 @@ router.delete('/estrutura/:id', async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Não foi possível excluir estrutura.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }

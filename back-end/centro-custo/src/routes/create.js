@@ -42,6 +42,14 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
             res.send(message)
         }
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
@@ -50,7 +58,7 @@ router.post('/centrocusto', fieldValidation, hasOrg, async (req, res) => {
             req.params,
             e.stack 
         )
-        res.send(message)
+        error
     }
 })
 

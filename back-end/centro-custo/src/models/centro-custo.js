@@ -15,13 +15,6 @@ const centroCustoSchema = new mongoose.Schema({
     },
 }, {collection: 'centro_de_custo'})
 
-centroCustoSchema.statics.sortTree = async function (id) {
-    const response = await this.find({centrocusto_org : new mongoose.Types.ObjectId(id)}).sort({centrocusto_parent: 1, })
-
-    return response
-}
-
-
 centroCustoSchema.statics.returnTree = async function (id) {
     const response = await this.aggregate([
         {
