@@ -5,11 +5,11 @@ class ErrorMessage {
 
     set addError(message){
         const error = {
-            type: "ERROR",
-            value: "",
+            type: 'ERROR',
+            value: '',
             msg: message,
-            path: "",
-            location: ""
+            path: '',
+            location: ''
         }
 
         this.errors.push(error)
