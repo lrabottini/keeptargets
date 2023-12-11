@@ -3,13 +3,13 @@ class ErrorMessage {
         this.errors = []
     }
 
-    addError(message){
+    addError(type, value, message, path, location){
         const error = {
-            type: 'ERROR',
-            value: '',
+            type: type,
+            value: value,
             msg: message,
-            path: '',
-            location: ''
+            path: path,
+            location: location
         }
 
         this.errors.push(error)
