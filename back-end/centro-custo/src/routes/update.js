@@ -1,7 +1,7 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, ErrorMessage } from '@keeptargets/common'
 import { CentroCusto } from '../models/centro-custo.js'
 import mongoose from 'mongoose'
 
@@ -50,6 +50,9 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = new ErrorMessage()
+        error.addError('ERROR', e.name, e.message, e.stack, '')
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
@@ -59,7 +62,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
                 params: req.params,
                 attrs: req.body
             },
-            e.stack
+            error
         )
         res.send(message)
     }
