@@ -6,7 +6,7 @@ import { Estrutura } from '../models/estrutura.js'
 
 const router = express.Router()
 
-router.delete('/estrutura/:id', async (req, res) => {
+router.delete('/estrutura/:id', validaUso, async (req, res) => {
     try {
         let message = ''
 

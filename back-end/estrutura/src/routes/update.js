@@ -1,6 +1,6 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-import { fieldValidation } from '../../../centro-custo/src/middleware/valida-chamada.js'
+import { fieldValidation } from '../middleware/valida-chamada.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Estrutura } from '../models/estrutura.js'
 import mongoose from 'mongoose'
