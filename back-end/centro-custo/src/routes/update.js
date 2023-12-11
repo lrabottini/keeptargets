@@ -18,7 +18,7 @@ router.put('/centrocusto/:id', fieldValidation, async (req, res) => {
                     centrocusto.set({
                         centrocusto_cod: req.body.codigo,
                         centrocusto_descr: req.body.descricao,
-                        centrocusto_parent: new mongoose.Types.ObjectId(req.body.parent)
+                        centrocusto_parent: req.body.parent? req.body.parent: new mongoose.Types.ObjectId(req.body.parent)
                     })
                     
                     centrocusto.save()
