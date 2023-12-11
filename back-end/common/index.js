@@ -14,3 +14,4 @@ export * from './src/services/base-subscriber.js'
 export * from './src/services/nats-wrapper.js'
 
 export * from './src/utils/format.js'
+export * from './src/utils/structure.js'
