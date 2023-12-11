@@ -3,7 +3,7 @@ class ErrorMessage {
         this.errors = []
     }
 
-    function addError(message){
+    set function addError(message){
         const error = {
             type: "ERROR"
             value: ""
