@@ -19,13 +19,15 @@ const usuarioSchema = new mongoose.Schema({
     },
 },
 {
+    collection: 'usuario',
     toJSON: {
-        transform(doc, ret){
-            delete ret.usuario_senha
+        transform: function (doc, ret) {
+            delete ret.usuario_senha;
+            delete ret.__v;
         }
     }
-},
-{collection: 'usuario'})
+}
+)
 
 const Usuario = mongoose.model('usuario', usuarioSchema)
 

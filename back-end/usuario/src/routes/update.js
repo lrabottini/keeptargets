@@ -2,6 +2,7 @@ import express from 'express'
 import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Usuario } from '../models/usuario.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -17,6 +18,7 @@ router.put('/usuario/:id', async (req, res) => {
                         usuario_nome: req.body.nome,
                         usuario_sobrenome: req.body.sobrenome,
                         usuario_email: req.body.email,
+                        usuario_perfil: new mongoose.Types.ObjectId(req.body.perfil)
                     })
                     
                     usuario.save()
@@ -25,7 +27,7 @@ router.put('/usuario/:id', async (req, res) => {
                         MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
-                        'Proprietário atualizado com sucesso.',
+                        'Usuário atualizado com sucesso.',
                         {
                             params: req.params,
                             attrs: req.body
@@ -38,7 +40,7 @@ router.put('/usuario/:id', async (req, res) => {
                 MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
-                'Não foi possível atualizar proprietário.',
+                'Não foi possível atualizar usuário.',
                 {
                     params: req.params,
                     attrs: req.body
@@ -60,7 +62,7 @@ router.put('/usuario/:id', async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Não foi possível atualizar proprietário.',
+            'Não foi possível atualizar usuário.',
             {
                 params: req.params,
                 attrs: req.body

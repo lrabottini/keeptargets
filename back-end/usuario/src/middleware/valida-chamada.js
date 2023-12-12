@@ -1,5 +1,6 @@
 import { check } from 'express-validator'
 import { Usuario } from '../models/usuario.js'
+import mongoose from 'mongoose'
 
 /** Valida se o login já está em uso */
 
@@ -41,13 +42,37 @@ const emUso = async (value, { req }) => {
     /** Caso o centro de custo não esteja em uso, retorna TRUE para a validação
         
     Retorna FALSE se a condição acima não for atendida */
-    return result[0].linhas.length === 0?
+    const linha = result[0].linhas.length === 0
+    const estrutura = result[0].estruturas.length === 0
+
+    return linha || estrutura ?
         Promise.resolve() : 
-        Promise.reject(new Error('Usuário está sendo utilizado, necessário alterar as linhas antes de excluir.'))
+        Promise.reject(new Error(`Usuário está sendo utilizado em ${result[0].linhas.length} linhas e ${result[0].estruturas.length} estruturas, necessário alterar as linhas antes de excluir.`))
 }
 
 const validaUso = [
     check('id').custom(emUso)
+]
+
+const emUsoLogin = async (value, { req }) => {
+    const result = await Usuario.find({usuario_login: value})
+
+    return !result ?
+        Promise.resolve() : 
+        Promise.reject(new Error('Login já está sendo utilizado por outro usuário.'))
+}
+
+const emUsoEmail = async (value, { req }) => {
+    const result = await Usuario.find({usuario_email: value})
+
+    return !result ?
+        Promise.resolve() : 
+        Promise.reject(new Error('Email já está sendo utilizado por outro usuário.'))
+}
+
+const validaLoginEmail = [
+    check('login').custom(emUsoLogin),
+    check('email').custom(emUsoEmail)
 ]
 
 const fieldValidation = [
@@ -59,4 +84,4 @@ const fieldValidation = [
     check('perfil').trim().notEmpty().withMessage('Já existe um ciclo ativo.')
 ]
 
-export { fieldValidation, validaUso }
+export { fieldValidation, validaUso, validaLoginEmail }

@@ -1,14 +1,14 @@
 import express from 'express'
 
 import { validationResult } from 'express-validator'
-import { fieldValidation } from '../middleware/valida-chamada.js'
+import { fieldValidation, validaLoginEmail } from '../middleware/valida-chamada.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Usuario } from '../models/usuario.js'
 import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.post('/usuario', fieldValidation, async (req, res) => {
+router.post('/usuario', fieldValidation, validaLoginEmail, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
@@ -30,7 +30,7 @@ router.post('/usuario', fieldValidation, async (req, res) => {
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
                 'Usuário criado com sucesso.',
-                req.body,
+                usuario,
                 result.array()
             )
             res.send(message)
@@ -40,7 +40,7 @@ router.post('/usuario', fieldValidation, async (req, res) => {
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
                 'Não foi possível criar usuário.',
-                req.body,
+                {},
                 result.array()
             )
             res.send(message)

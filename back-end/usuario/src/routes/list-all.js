@@ -22,7 +22,7 @@ router.get('/usuario/all/:org', async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Erro ao buscar proprietário.',
+            'Erro ao buscar usuário.',
             req.params,
             error 
         )
