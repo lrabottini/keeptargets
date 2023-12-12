@@ -6,7 +6,8 @@ const router = express.Router()
 
 router.get('/usuario/all/:org', async (req, res) => {
     try {
-        const usuario = await Usuario.find({usuario_org: req.params.org})
+        //const usuario = await Usuario.find({usuario_org: req.params.org})
+        const usuario = await Usuario.findUsuarios(req.params.org)
 
         res.send(usuario)
     } catch (e) {
