@@ -69,17 +69,12 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     as: 'situacao',
                 }
             }
-            // ,{
-            //     $project: {
-            //         linha_versao: 0,
-            //         linha_centro_de_custo: 0,
-            //         linha_tipo_de_despesa: 0,
-            //         linha_estrutura: 0,
-            //         linha_proprietario: 0,
-            //         linha_fornecedor: 0,
-            //         linha_etapa: 0
-            //     }
-            // }
+            ,{
+                $project: {
+                    usuario_senha: 0,
+                    __v: 0
+                }
+            }
     ]).exec()
 
     return response
