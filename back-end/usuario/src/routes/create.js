@@ -1,41 +1,45 @@
 import express from 'express'
 
 import { validationResult } from 'express-validator'
-import { fieldValidation, hasOrg } from '../middleware/valida-chamada.js'
+import { fieldValidation } from '../middleware/valida-chamada.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
-import { Estrutura } from '../models/estrutura.js'
+import { Usuario } from '../models/usuario.js'
 import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
+router.post('/usuario', fieldValidation, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
-            const estrutura = new Estrutura()
+            const usuario = new Usuario()
 
-            estrutura.estrutura_org = req.body.org 
-            estrutura.estrutura_cod = req.body.codigo
-            estrutura.estrutura_descr = req.body.descricao
-            estrutura.estrutura_parent = Number(req.body.parent) === 0 || req.body.parent === null ? Number(req.body.parent) : new mongoose.Types.ObjectId(req.body.parent)
+            usuario.usuario_org = new mongoose.Types.ObjectId(req.body.org)
+            usuario.usuario_nome = req.body.nome
+            usuario.usuario_sobrenome = req.body.sobrenome
+            usuario.usuario_login = req.body.login
+            usuario.usuario_senha = req.body.senha
+            usuario.usuario_email = req.body.email
+            usuario.usuario_perfil = new mongoose.Types.ObjectId(req.body.perfil)
+            usuario.usuario_situacao = new mongoose.Types.ObjectId(req.body.situacao)
 
-            await estrutura.save()
+            await usuario.save()
             
             const message = new ExecutionMessage(
                 MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
-                'Estrutura criada com sucesso.',
+                'Usuário criado com sucesso.',
                 req.body,
                 result.array()
             )
             res.send(message)
         } else {
             const message = new ExecutionMessage(
-                MessageLevel.LEVEL_INFO,
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
-                'Não foi possível criar estrutura.',
+                'Não foi possível criar usuário.',
                 req.body,
                 result.array()
             )
@@ -54,7 +58,7 @@ router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Não foi possíve criar estrutura.',
+            'Não foi possíve criar usuário.',
             req.params,
             error 
         )
@@ -62,4 +66,4 @@ router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
     }
 })
 
-export { router as createEstrutura }
+export { router as createUsuario }

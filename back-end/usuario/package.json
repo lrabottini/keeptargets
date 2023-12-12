@@ -1,7 +1,7 @@
 {
-  "name": "proprietario",
+  "name": "Usuário",
   "version": "1.0.0",
-  "description": "Responsável por uma linha de orçameto, orçameto específico ou grupo de orçamentos.",
+  "description": "Usuário do sistema e responsável por uma linha de orçameto, orçameto específico ou grupo de orçamentos.",
   "main": "index.js",
   "keywords": [],
   "author": "",

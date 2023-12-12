@@ -1,27 +1,28 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
-import { Proprietario } from '../models/proprietario.js'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
+import { Usuario } from '../models/usuario.js'
 
 const router = express.Router()
 
-router.put('/proprietario/:id', async (req, res) => {
+router.put('/usuario/:id', async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await Proprietario.findById(req.params.id)
-                .then((proprietario) => {
-                    proprietario.set({
-                        prop_cod: req.body.codigo,
-                        prop_nome: req.body.descricao,
-                        prop_role: req.body.role
+            await Usuario.findById(req.params.id)
+                .then((usuario) => {
+                    usuario.set({
+                        usuario_nome: req.body.nome,
+                        usuario_sobrenome: req.body.sobrenome,
+                        usuario_email: req.body.email,
                     })
                     
-                    proprietario.save()
+                    usuario.save()
             
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Proprietário atualizado com sucesso.',
@@ -34,6 +35,7 @@ router.put('/proprietario/:id', async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar proprietário.',
@@ -46,7 +48,16 @@ router.put('/proprietario/:id', async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
             'Não foi possível atualizar proprietário.',
@@ -54,10 +65,10 @@ router.put('/proprietario/:id', async (req, res) => {
                 params: req.params,
                 attrs: req.body
             },
-            e.stack
+            error
         )
         res.send(message)
     }
 })
 
-export { router as updateProprietario }
+export { router as updateUsuario }
