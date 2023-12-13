@@ -19,6 +19,7 @@ router.post('/situacao', async (req, res) => {
             situacao.situacao_descr = req.body.descr
             situacao.situacao_nome = req.body.nome
             situacao.situacao_objeto = req.body.objeto
+            situacao.situacao_cor = req.body.cor
 
             await situacao.save()
             

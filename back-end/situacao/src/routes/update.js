@@ -16,6 +16,7 @@ router.put('/situacao/:id', async (req, res) => {
                     situacao.set({
                         situacao_descr: req.body.descr,
                         situacao_nome: req.body.nome,
+                        situacao_cor: req.body.cor,
                         lastModified: Date.now()
                     })
                     
