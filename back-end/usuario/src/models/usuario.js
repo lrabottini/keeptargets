@@ -46,14 +46,14 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'role_name': 1
+                                'perfil_nome': 1
                             }
                         }
                     ],
                     as: 'perfil',
                 }
             }
-            /** Faz o lookup para trazer o tipo de despesa */
+            /** Faz o lookup para trazer a situação */
             ,{
                 $lookup: {
                     from: 'situacao',
@@ -62,7 +62,7 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'sit_descr': 1
+                                'situacao_nome': 1
                             }
                         }
                     ],
