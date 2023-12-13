@@ -17,7 +17,7 @@ router.get('/perfil/:id', async (req, res) => {
                     ExecutionTypes.LIST,
                     'Perfil não encontrado.',
                     req.params,
-                    []
+                    {}
                 )
                 res.send(message)
             })

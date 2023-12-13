@@ -16,7 +16,8 @@ router.put('/perfil/:id', fieldValidation, async (req, res) => {
             await Perfil.findById(req.params.id)
                 .then((perfil) => {
                     perfil.set({
-                        perfil_descr: req.body.descricao,
+                        perfil_nome: req.body.nome,
+                        perfil_descr: req.body.descricao
                     })
                     
                     perfil.save()

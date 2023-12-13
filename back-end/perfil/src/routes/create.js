@@ -15,6 +15,7 @@ router.post('/perfil', fieldValidation, hasOrg, async (req, res) => {
             const perfil = new Perfil()
 
             perfil.perfil_org = new mongoose.Types.ObjectId(req.body.org)
+            perfil.perfil_nome = req.body.nome
             perfil.perfil_descr = req.body.descricao
 
             await perfil.save()

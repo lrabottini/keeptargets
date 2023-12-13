@@ -2,6 +2,7 @@ import mongoose, { SchemaTypes } from "mongoose"
 
 const perfilSchema = new mongoose.Schema({
     perfil_org: mongoose.Types.ObjectId,
+    perfil_nome: String,
     perfil_descr: String,
     createdAt: {
         type: Date,
