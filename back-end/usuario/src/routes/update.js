@@ -19,7 +19,7 @@ router.put('/usuario/:id', async (req, res) => {
                         usuario_sobrenome: req.body.sobrenome,
                         usuario_email: req.body.email,
                         usuario_perfil: new mongoose.Types.ObjectId(req.body.perfil),
-                        usuario_situacao: new mongoose.Types.ObjectId(req.body.perfil)
+                        usuario_situacao: new mongoose.Types.ObjectId(req.body.situacao)
                     })
                     
                     usuario.save()
