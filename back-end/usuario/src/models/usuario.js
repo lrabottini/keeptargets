@@ -62,7 +62,8 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'situacao_nome': 1
+                                'situacao_nome': 1,
+                                'situacao_cor': 1
                             }
                         }
                     ],
