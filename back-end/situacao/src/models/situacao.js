@@ -7,6 +7,7 @@ const situacaoSchema = new mongoose.Schema({
     situacao_descr: String,
     situacao_nome: String,
     situacao_objeto: String,
+    situacao_cor: String,
     createdAt: {
         type: Date,
         default: Date.now()
