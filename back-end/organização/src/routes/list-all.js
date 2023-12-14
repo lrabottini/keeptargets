@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/organizacaoall/', async (req, res) => {
     try {
-        const organizacao = await Organizacao.find()
+        const organizacao = await Organizacao.listOrgs()
 
         res.send(organizacao)
     } catch (e) {

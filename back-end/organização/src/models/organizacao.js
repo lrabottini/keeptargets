@@ -27,6 +27,40 @@ const organizacaoSchema = new mongoose.Schema({
     }
 })
 
+organizacaoSchema.statics.listOrgs = async function () {
+    const response = await this.aggregate([
+            /** Faz o lookup para trazer a situação */
+            {
+                $lookup: {
+                    from: 'situacao',
+                    localField: 'organizacao_situacao',
+                    foreignField: '_id',
+                    pipeline:[
+                        {
+                            $project: {
+                                'situacao_nome': 1,
+                                'situacao_cor': 1
+                            }
+                        }
+                    ],
+                    as: 'situacao',
+                }
+            }
+            ,{
+                $project: {
+                    createdAt: 0,
+                    lastModified: 0,
+                    usuario_senha: 0,
+                    organizacao_situacao: 0,
+                    organizacao_responsavel: 0,
+                    __v: 0
+                }
+            }
+    ]).exec()
+
+    return response
+}
+
 const Organizacao = mongoose.model('Organizacao', organizacaoSchema)
 
 export { Organizacao }
