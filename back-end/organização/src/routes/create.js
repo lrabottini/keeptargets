@@ -4,6 +4,7 @@ import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
 import { fieldValidation, validaCNPJ } from '../middleware/valida-chamada.js'
 import { Organizacao } from '../models/organizacao.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -15,10 +16,10 @@ router.post('/organizacao', fieldValidation, validaCNPJ, async (req, res) => {
 
             organizacao.organizacao_nome = req.body.nome
             organizacao.organizacao_cnpj = req.body.cnpj
-            organizacao.organizacao_situacao = req.body.situacao
+            organizacao.organizacao_situacao = new mongoose.Types.ObjectId(req.body.situacao)
             organizacao.organizacao_plano = req.body.plano
             organizacao.organizacao_data_expiração = toFormattedDate(req.body.expiracao)
-            organizacao.organizacao_responsavel = req.body.responsavel
+            organizacao.organizacao_responsavel = new mongoose.Types.ObjectId(req.body.responsavel)
 
             await organizacao.save()
             
