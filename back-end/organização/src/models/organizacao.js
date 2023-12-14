@@ -46,9 +46,25 @@ organizacaoSchema.statics.listOrgs = async function () {
                     as: 'situacao',
                 }
             }
+            /** Faz o lookup para trazer o responsável principal */
+            ,{
+                $lookup: {
+                    from: 'usuario',
+                    localField: 'organizacao_responsavel',
+                    foreignField: '_id',
+                    pipeline:[
+                        {
+                            $project: {
+                                'usuario_nome': 1,
+                                'usuario_sobrenome': 1
+                            }
+                        }
+                    ],
+                    as: 'usuario',
+                }
+            }
             ,{
                 $project: {
-                    createdAt: 0,
                     lastModified: 0,
                     usuario_senha: 0,
                     organizacao_situacao: 0,
