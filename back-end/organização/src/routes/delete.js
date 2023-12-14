@@ -2,25 +2,25 @@ import express from 'express'
 import { validationResult } from 'express-validator'
 
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
-import { Fornecedor } from '../models/fornecedor.js'
 import { validaUso } from '../middleware/valida-chamada.js'
+import { Organizacao } from '../models/organizacao.js'
 
 const router = express.Router()
 
-router.delete('/fornecedor/:id', validaUso, async (req, res) => {
+router.delete('/organizacao/:id', validaUso, async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            const d = await Fornecedor.deleteOne({ _id: req.params.id }) 
+            const d = await Organizacao.deleteOne({ _id: req.params.id }) 
 
             if (d.deletedCount === 0) {
                 message = new ExecutionMessage(
                     MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.DELETE,
-                    'Fornecedor não encontrado.',
+                    'Organização não encontrada.',
                     req.params,
                     result.array()
                 )
@@ -29,17 +29,17 @@ router.delete('/fornecedor/:id', validaUso, async (req, res) => {
                     MessageLevel.LEVEL_INFO,
                     ExecutionStatus.SUCCESS,
                     ExecutionTypes.DELETE,
-                    'Fornecedor excluído com sucesso.',
+                    'Organização excluída com sucesso.',
                     req.params,
                     result.array()
                 )
             }
         } else {
             message = new ExecutionMessage(
-                MessageLevel.LEVEL_ERROR,
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
-                'Não foi possível excluir fornecedor.',
+                'Não foi possível excluir organização.',
                 req.params,
                 result.array()
             )
@@ -58,7 +58,7 @@ router.delete('/fornecedor/:id', validaUso, async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
-            'Não foi possível excluir fornecedor.',
+            'Não foi possível excluir organização.',
             req.params,
             error
         )
@@ -66,4 +66,4 @@ router.delete('/fornecedor/:id', validaUso, async (req, res) => {
     }
 })
 
-export { router as deleteFornecedor }
+export { router as del }
