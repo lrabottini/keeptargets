@@ -40,7 +40,7 @@ const validaUso = [
 const emUsoCNPJ = async (value, { req }) => {
     const result = await Fornecedor.find({fornecedor_cnpj: value})
 
-    return result.length === 0 || result[0]._id === req.params.id ?
+    return result.length === 0 || result[0].id === req.params.id ?
         Promise.resolve() : 
         Promise.reject(new Error('CNPJ já está sendo utilizado por outro fornecedor.'))
 }
