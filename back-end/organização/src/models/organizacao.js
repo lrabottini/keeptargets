@@ -56,7 +56,10 @@ organizacaoSchema.statics.listOrgs = async function () {
                         {
                             $project: {
                                 'usuario_nome': 1,
-                                'usuario_sobrenome': 1
+                                'usuario_sobrenome': 1,
+                                'usuario_nomecompleto': {
+                                    $concat: ["$usuario_nome", " ", "$usuario_sobrenome"] // Cria um campo "nomeCompleto"
+                                }
                             }
                         }
                     ],

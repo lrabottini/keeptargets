@@ -75,8 +75,14 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     usuario_senha: 0,
                     __v: 0
                 }
-            }
-    ]).exec()
+            },
+            {
+                $addFields: {
+                  usuario_nomeCompleto: {
+                    $concat: ["$usuario_nome", " ", "$usuario_sobrenome"]
+                  }
+                }
+              }    ]).exec()
 
     return response
 }
