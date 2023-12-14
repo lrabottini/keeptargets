@@ -1,12 +1,13 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Fornecedor } from '../models/fornecedor.js'
+import { validaUso } from '../middleware/valida-chamada.js'
 
 const router = express.Router()
 
-router.delete('/fornecedor/:id', async (req, res) => {
+router.delete('/fornecedor/:id', validaUso, async (req, res) => {
     try {
         let message = ''
 
@@ -16,6 +17,7 @@ router.delete('/fornecedor/:id', async (req, res) => {
 
             if (d.deletedCount === 0) {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.DELETE,
                     'Fornecedor não encontrado.',
@@ -24,6 +26,7 @@ router.delete('/fornecedor/:id', async (req, res) => {
                 )
             } else {
                 message = new ExecutionMessage(
+                    MessageLevel.LEVEL_INFO,
                     ExecutionStatus.SUCCESS,
                     ExecutionTypes.DELETE,
                     'Fornecedor excluído com sucesso.',
@@ -33,6 +36,7 @@ router.delete('/fornecedor/:id', async (req, res) => {
             }
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.DELETE,
                 'Não foi possível excluir fornecedor.',
@@ -42,12 +46,21 @@ router.delete('/fornecedor/:id', async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Não foi possível excluir fornecedor.',
             req.params,
-            e.stack 
+            error
         )
         res.send(message)
     }

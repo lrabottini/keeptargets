@@ -1,23 +1,57 @@
 import { check } from 'express-validator'
-import { toFormattedDate } from '@keeptargets/common'
-import { Linha } from '../models/despesa.js'
+import { Fornecedor } from '../models/fornecedor.js'
+import mongoose from 'mongoose'
 
-const compareDates = (value, { req }) => {
-    return toFormattedDate(req.body.end) > toFormattedDate(req.body.start) 
-}
+/** Valida se o fornecedor está em uso */
+const emUso = async (value, { req }) => {
+    const result = await Fornecedor.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(value)
+            }
+        }
+        /** Faz o lookup para trazer as informações da linha */
+        ,{
+            $lookup: {
+                from: 'linha',
+                localField: '_id',
+                foreignField: 'linha_fornecedor',
+                as: 'linhas',
+            }
+        }
+    ]).exec()
+    
+    /** Caso o fornecedor não esteja em uso, retorna TRUE para a validação
+    Retorna FALSE se a condição acima não for atendida */
 
-const hasActive = async (value, { req }) => {
-    const result = await Linha.find({linha_situacao: 1})
-    const validation = result.length === 0 || result === undefined ? true: req.method === 'PUT' && result[0]._id.toString() === req.params.id? true: false  
+    const validation = result[0].hasOwnProperty('linhas')? 
+        result[0].linhas.length === 0?
+            Promise.resolve() : 
+            Promise.reject(new Error('Fornecedor está sendo utilizado, necessário alterar linhas de orçamento antes de excluir.'))
+        : Promise.resolve()
+
     return validation
 }
 
-const fieldValidation = [
-    check('name').trim().notEmpty().withMessage('Nome não informado.'),
-    check('start').trim().notEmpty().withMessage('Início do ciclo não informado.'),
-    check('end').trim().notEmpty().withMessage('Fim do ciclo não informado.'),
-    check('start').custom(compareDates).withMessage('Data início não pode ser maior que data fim.'),
-    check('status').custom(hasActive).withMessage('Já existe um ciclo ativo.')
+const validaUso = [
+    check('id').custom(emUso)
 ]
 
-export { fieldValidation }
+const emUsoCNPJ = async (value, { req }) => {
+    const result = await Fornecedor.find({fornecedor_cnpj: value})
+
+    return result.length === 0 || result[0]._id === req.params.id ?
+        Promise.resolve() : 
+        Promise.reject(new Error('CNPJ já está sendo utilizado por outro fornecedor.'))
+}
+
+const validaCNPJ = [
+    check('cnpj').custom(emUsoCNPJ)
+]
+
+const fieldValidation = [
+    check('nome').trim().notEmpty().withMessage('Nome não informado.'),
+    check('cnpj').trim().notEmpty().withMessage('CNPJ não informado.'),
+]
+
+export { fieldValidation, validaCNPJ, validaUso }

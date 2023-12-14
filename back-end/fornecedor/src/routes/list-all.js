@@ -1,21 +1,30 @@
 import express from 'express'
-import { ExecutionMessage, ExecutionTypes, ExecutionStatus } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionTypes, ExecutionStatus, MessageLevel } from '@keeptargets/common'
 import { Fornecedor } from '../models/fornecedor.js'
 
 const router = express.Router()
 
-router.get('/fornecedor', async (req, res) => {
+router.get('/fornecedor/all/:org', async (req, res) => {
     try {
-        const fornecedor = await Fornecedor.find()
+        const fornecedor = await Fornecedor.find({fornecedor_org: req.params.org})
 
         res.send(fornecedor)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_WARNING,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Erro ao buscar fornecedor.',
+            'Não foi possível buscar fornecedor.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }
