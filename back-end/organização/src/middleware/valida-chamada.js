@@ -38,7 +38,7 @@ const validaUso = [
 ]
 
 const emUsoCNPJ = async (value, { req }) => {
-    const result = await Organizacao.find({organizaao_cnpj: value})
+    const result = await Organizacao.find({organizacao_cnpj: value})
 
     return result.length === 0 || result[0].id === req.params.id ?
         Promise.resolve() : 

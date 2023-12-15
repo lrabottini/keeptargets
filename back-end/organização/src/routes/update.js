@@ -20,7 +20,7 @@ router.put('/organizacao/:id', fieldValidation, validaCNPJ, async (req, res) => 
                         organizacao_cnpj: req.body.cnpj,
                         organizacao_nome: req.body.nome,
                         organizacao_situacao: new mongoose.Types.ObjectId(req.body.situacao),
-                        organizacao_plano: req.body.plano,
+                        organizacao_plano: new mongoose.Types.ObjectId(req.body.plano),
                         organizacao_data_expiração: toFormattedDate(req.body.expiracao),
                     })
                     
