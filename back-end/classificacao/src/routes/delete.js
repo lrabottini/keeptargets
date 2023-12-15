@@ -55,7 +55,7 @@ router.delete('/classificacao/:id', async (req, res) => {
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
-            ExecutionType.DELETE,
+            ExecutionTypes.DELETE,
             'Não foi possível excluir classificação.',
             req.params,
             error 
