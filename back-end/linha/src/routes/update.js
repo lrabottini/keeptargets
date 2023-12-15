@@ -1,7 +1,7 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 import { Linha } from '../models/linha.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate, MessageLevel } from '@keeptargets/common'
 
 const router = express.Router()
 
@@ -40,6 +40,7 @@ router.put('/linha/:id', async (req, res) => {
                     
                     linha.save()
                     message = new ExecutionMessage(
+                        MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
                         'Linha atualizado com sucesso.',
@@ -52,6 +53,7 @@ router.put('/linha/:id', async (req, res) => {
                 })
         } else {
             message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
                 'Não foi possível atualizar linha.',
@@ -64,7 +66,16 @@ router.put('/linha/:id', async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
             'Erro ao atualizar linha.',

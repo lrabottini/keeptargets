@@ -1,6 +1,6 @@
 import express from 'express'
 import { Linha } from '../models/linha.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 
 const router = express.Router()
 
@@ -12,6 +12,7 @@ router.get('/linha/:id', async (req, res) => {
             })
             .catch(() => {
                 const message = new ExecutionMessage(
+                    MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.LIST,
                     'Linha não encontrada.',
@@ -22,12 +23,21 @@ router.get('/linha/:id', async (req, res) => {
             })
 
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
             'Erro ao buscar linha.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }

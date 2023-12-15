@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import { validationResult } from 'express-validator'
 import { fieldValidation } from '../middleware/valida-chamada.js'
 import { Linha } from '../models/linha.js'
-import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate } from '@keeptargets/common'
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate, MessageLevel } from '@keeptargets/common'
 
 const router = express.Router()
 
@@ -36,6 +36,7 @@ router.post('/linha', async (req, res) => {
             await linha.save()
             
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
                 'Linha criada com sucesso.',
@@ -45,6 +46,7 @@ router.post('/linha', async (req, res) => {
             res.send(message)
         } else {
             const message = new ExecutionMessage(
+                MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
                 'Não foi possível criar linha.',
@@ -54,12 +56,21 @@ router.post('/linha', async (req, res) => {
             res.send(message)
         }
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Erro ao criar linha.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }
