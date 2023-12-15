@@ -54,6 +54,7 @@ router.delete('/linha/:id', async (req, res) => {
         }]
 
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Erro ao excluir linha.',
