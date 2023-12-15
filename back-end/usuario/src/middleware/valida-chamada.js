@@ -55,17 +55,17 @@ const validaUso = [
 ]
 
 const emUsoLogin = async (value, { req }) => {
-    const result = await Usuario.find({usuario_login: value})
+    const result = await Usuario.find({usuario_login: value, usuario_org: req.body.org})
 
-    return !result ?
+    return result.length === 0 ?
         Promise.resolve() : 
         Promise.reject(new Error('Login já está sendo utilizado por outro usuário.'))
 }
 
 const emUsoEmail = async (value, { req }) => {
-    const result = await Usuario.find({usuario_email: value})
+    const result = await Usuario.find({usuario_email: value, usuario_org: req.body.org})
 
-    return !result ?
+    return result.length === 0 ?
         Promise.resolve() : 
         Promise.reject(new Error('Email já está sendo utilizado por outro usuário.'))
 }
