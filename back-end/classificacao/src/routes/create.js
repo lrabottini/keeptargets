@@ -49,6 +49,7 @@ router.post('/classificacao', validaParametros, validaCampos, async (req, res) =
         }]
 
         const message = new ExecutionMessage(
+            MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Não foi possível criar classificação.',
