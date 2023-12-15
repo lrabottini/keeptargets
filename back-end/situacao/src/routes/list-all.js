@@ -8,10 +8,13 @@ const filter = (filtro) => {
     let filter = {}
 
     if (filtro.hasOwnProperty('objeto')) {
-        filter = {
-            situacao_objeto: `${filtro.objeto}`
-        }
+        if (filtro.objeto !== 'all'){
+            filter = {
+                situacao_objeto: `${filtro.objeto}`
+            }
+        } 
     }
+
     return filter
 }
 
