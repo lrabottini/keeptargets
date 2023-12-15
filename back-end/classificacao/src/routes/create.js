@@ -40,12 +40,20 @@ router.post('/classificacao', validaParametros, validaCampos, async (req, res) =
             res.send(message)
         }
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Não foi possível criar classificação.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }

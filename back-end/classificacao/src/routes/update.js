@@ -47,6 +47,14 @@ router.put('/classificacao/:id', validaCampos, async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
@@ -56,7 +64,7 @@ router.put('/classificacao/:id', validaCampos, async (req, res) => {
                 params: req.params,
                 attrs: req.body
             },
-            e.stack
+            error
         )
         res.send(message)
     }

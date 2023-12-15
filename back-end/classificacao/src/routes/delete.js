@@ -44,13 +44,21 @@ router.delete('/classificacao/:id', async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionType.DELETE,
             'Não foi possível excluir classificação.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }
