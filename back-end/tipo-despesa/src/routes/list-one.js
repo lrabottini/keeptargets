@@ -23,13 +23,21 @@ router.get('/tipodespesa/:id', async (req, res) => {
             })
 
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
             'Não foi possível buscar tipo de despesa.',
             req.params,
-            e.stack 
+            error
         )
         res.send(message)
     }
