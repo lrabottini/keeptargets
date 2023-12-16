@@ -18,7 +18,7 @@ router.post('/ciclo', fieldValidation, hasOrg, async (req, res) => {
             ciclo.ciclo_name = req.body.name
             ciclo.ciclo_start = toFormattedDate(req.body.start)
             ciclo.ciclo_end = toFormattedDate(req.body.end)
-            ciclo.ciclo_status = req.body.status
+            ciclo.ciclo_situacao = new mongoose.Types.ObjectId(req.body.situacao)
 
             await ciclo.save()
             
@@ -43,12 +43,20 @@ router.post('/ciclo', fieldValidation, hasOrg, async (req, res) => {
             res.send(message)
         }
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
             'Não foi possível criar ciclo.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }

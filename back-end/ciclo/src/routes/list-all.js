@@ -6,17 +6,25 @@ const router = express.Router()
 
 router.get('/ciclo/', async (req, res) => {
     try {
-        const ciclo = await Ciclo.find({ ciclo_org: req.query.org })
+        const ciclo = await Ciclo.listaCiclos(req.query.org)
 
         res.send(ciclo)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.DELETE,
             'Erro ao buscar ciclos.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }
