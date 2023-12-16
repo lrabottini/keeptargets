@@ -57,9 +57,6 @@ cicloSchema.statics.listaCiclos = async function (id) {
     return response
 }
 
-657d4f39d9f7560267a1427d
-657d4f0ad9f7560267a1427c
-
 const Ciclo = mongoose.model('Ciclo', cicloSchema)
 
 export { Ciclo }
