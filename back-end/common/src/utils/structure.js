@@ -4,6 +4,14 @@ function aplanarEstrutura(hierarquia) {
     function aplanar(item, prefix, level) {
         const { _id, children, ...rest } = item;
 
+        const line = '-'
+        let descrIdendata = ''
+        if (level > 0) {
+            descrIdendata = ''.concat('|', '-'.repeat(4 * level), rest.estrutura_descr)
+        } else{
+            descrIdendata = rest.estrutura_descr
+        }
+
         const hasChildren = children && children.length > 0;
 
         const currentSuffix = flatHierarchy.length + 1;
@@ -16,6 +24,7 @@ function aplanarEstrutura(hierarquia) {
             prefix: currentPrefix.toString(),
             level,
             hasChildren,
+            descrIdendata
         });
 
         if (hasChildren) {
