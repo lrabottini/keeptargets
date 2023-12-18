@@ -6,12 +6,9 @@ const router = express.Router()
 
 router.get('/versao/?', async (req, res) => {
     try {
-        let filter = {}
-        for (const key in req.query){
-            if (Object.hasOwnProperty.call(req.query, key)) {
-                filter[`versao_${key}`] = req.query[key]
-            }
-        }
+        const { key, value } = req.query
+        const filter = {}
+        filter[`versao_${key}`] = value
 
         const versao = await Versao.find(filter)
 
