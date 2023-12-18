@@ -1,5 +1,4 @@
 import { check } from 'express-validator'
-import { toFormattedDate } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
 import mongoose from 'mongoose'
 
@@ -15,15 +14,28 @@ const hasChildren = async (value, { req }) => {
         
     Retorna FALSE se a condição acima não for atendida */
     return result.versao_linhas === 0? Promise.resolve() : 
-                                       Promise.reject(new Error('Versão possui linhas criadas. Necessário excluir as linhas antes de excluir a versão.'))
+                                       Promise.reject(new Error('Esta versão já está em uso.'))
 }
-
-const fieldValidation = [
-    check('nome').trim().notEmpty().withMessage('Nome não informado.'),
-]
 
 const childrenValidation = [
     check('linhas').custom(hasChildren)
 ]
 
-export { fieldValidation, childrenValidation }
+const validaCamposCriacao = [
+    check('nome').trim().notEmpty().withMessage('Nome não informado.'),
+    check('situacao_id').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('situacao_nome').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('situacao_cor').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('responsavel').trim().notEmpty().withMessage('Responsável não informado.'),
+    check('estrutura').trim().notEmpty().withMessage('Estrutura não informada.'),
+]
+
+const validaCamposAtualizacao = [
+    check('nome').trim().notEmpty().withMessage('Nome não informado.'),
+    check('situacao_id').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('situacao_nome').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('situacao_cor').trim().notEmpty().withMessage('Informações da situação não informadas.'),
+    check('responsavel').trim().notEmpty().withMessage('Responsável não informado.'),
+]
+
+export { validaCamposCriacao, validaCamposAtualizacao, childrenValidation }

@@ -35,13 +35,21 @@ router.delete('/versao/:id', childrenValidation, async (req, res) => {
         }
         res.send(message)
     } catch (e) {
+        const error = [{
+            type: e.name,
+            value: '',
+            msg: e.message,
+            path: e.stack,
+            location: ''
+        }]
+
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionType.DELETE,
             'Não foi possível excluir versão.',
             req.params,
-            e.stack 
+            error 
         )
         res.send(message)
     }
