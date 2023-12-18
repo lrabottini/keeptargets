@@ -1,14 +1,16 @@
 import express from 'express'
 import { ExecutionMessage, ExecutionTypes, ExecutionStatus, MessageLevel } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.get('/versao/?', async (req, res) => {
+router.get('/versao/', async (req, res) => {
     try {
-        const { key, value } = req.query
         const filter = {}
-        filter[`versao_${key}`] = value
+        for (const key in req.query){
+            filter[`versao_${key}`] = new mongoose.Types.ObjectId(req.query[key])
+        }
 
         const versao = await Versao.find(filter)
 
