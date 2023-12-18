@@ -5,16 +5,14 @@ import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.get('/versao/', async (req, res) => {
+router.get('/versao/?', async (req, res) => {
     try {
         const filter = {}
         for (const key in req.query){
-            filter[`versao_${key}`] = new mongoose.Types.ObjectId(req.query[key])
+            if (req.query[key] !== '')
+                filter[`versao_${key}`] = new mongoose.Types.ObjectId(req.query[key])
         }
 
-        console.log(req.url)
-        console.log(req.query)
-        console.log(filter)
         const versao = await Versao.find(filter)
 
         res.send(versao)
