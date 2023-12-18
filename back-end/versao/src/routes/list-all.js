@@ -12,6 +12,9 @@ router.get('/versao/', async (req, res) => {
             filter[`versao_${key}`] = new mongoose.Types.ObjectId(req.query[key])
         }
 
+        console.log(req.url)
+        console.log(req.query)
+        console.log(filter)
         const versao = await Versao.find(filter)
 
         res.send(versao)
