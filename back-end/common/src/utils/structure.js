@@ -6,7 +6,8 @@ function aplanarEstrutura(hierarquia) {
 
         let treeDescr = ''
         if (level > 0) {
-            treeDescr = ''.concat('&nbsp;'.repeat(4 * level),'|', '-'.repeat(4), rest.estrutura_descr)
+            treeDescr = ''.concat('|', '-'.repeat(4), rest.estrutura_descr)
+            treeDescr = treeDescr.padStart(level * 4)            
         } else{
             treeDescr = rest.estrutura_descr
         }
