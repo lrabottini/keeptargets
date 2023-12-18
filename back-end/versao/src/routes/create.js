@@ -19,8 +19,8 @@ router.post('/versao', validaCamposCriacao, async (req, res) => {
             versao.versao_situacao.situacao_id = new mongoose.Types.ObjectId(req.body.situacao_id)
             versao.versao_situacao.situacao_nome = req.body.situacao_nome
             versao.versao_situacao.situacao_cor = req.body.situacao_cor
-            versao.versao_responsavel = new mongoose.Types.ObjectId(req.body.situacao_id)
-            versao.versao_estrutura = new mongoose.Types.ObjectId(req.body.situacao_id)
+            versao.versao_responsavel = new mongoose.Types.ObjectId(req.body.responsavel)
+            versao.versao_estrutura = new mongoose.Types.ObjectId(req.body.estrutura)
         
             await versao.save()
             

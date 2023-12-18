@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 import { Versao } from '../models/versao.js'
 import { validaCamposAtualizacao, childrenValidation } from '../middleware/valida-chamada.js'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -16,7 +17,6 @@ router.put('/versao/:id', validaCamposAtualizacao, childrenValidation, async (re
                 .then((versao) => {
                     versao.set({
                         versao_nome: req.body.nome,
-                        versao_situacao: req.body.situacao,
                         versao_linhas: req.body.linhas,
                         versao_valor_total: req.body.valor_total,
                         versao_situacao: {
@@ -24,7 +24,7 @@ router.put('/versao/:id', validaCamposAtualizacao, childrenValidation, async (re
                             situacao_nome: req.body.situacao_nome,
                             situacao_cor: req.body.situacao_cor
                         },
-                        versao_responsavel: new mongoose.Types.ObjectId(req.body.situacao_id),
+                        versao_responsavel: new mongoose.Types.ObjectId(req.body.responsavel),
                         lastModified: Date.now()
                     })
                     
