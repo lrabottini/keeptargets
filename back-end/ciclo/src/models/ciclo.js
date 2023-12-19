@@ -48,8 +48,7 @@ cicloSchema.statics.listaCiclos = async function (id) {
             $project: {
                 lastModified: 0,
                 __v: 0,
-                createdAt: 0,
-                ciclo_situacao: 0
+                createdAt: 0
             }
         }
     ]).exec()
