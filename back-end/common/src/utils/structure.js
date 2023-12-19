@@ -4,13 +4,7 @@ function aplanarEstrutura(hierarquia) {
     function aplanar(item, prefix, level) {
         const { _id, children, ...rest } = item;
 
-        let treeDescr = ''
-        if (level > 0) {
-            treeDescr = ''.concat('|', '-'.repeat(4), rest.estrutura_descr)
-            treeDescr = treeDescr.padStart(level * 4)            
-        } else{
-            treeDescr = rest.estrutura_descr
-        }
+        const treeDescr = level > 0? ' '.repeat(level * 4).concat('|----', rest.estrutura_descr) : rest.estrutura_descr
 
         const hasChildren = children && children.length > 0;
 
