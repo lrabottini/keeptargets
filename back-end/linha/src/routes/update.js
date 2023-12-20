@@ -15,8 +15,6 @@ router.put('/linha/:id', async (req, res) => {
             await Linha.findById(req.params.id)
                 .then((linha) => {
                     linha.set({
-                        linha_org: new mongoose.Types.ObjectId(req.body.org),
-                        linha_ciclo: new mongoose.Types.ObjectId(req.body.ciclo),
                         linha_versao: new mongoose.Types.ObjectId(req.body.versao),
                         linha_classificacao: new mongoose.Types.ObjectId(req.body.classificacao),
                         linha_centro_de_custo: new mongoose.Types.ObjectId(req.body.cc),
