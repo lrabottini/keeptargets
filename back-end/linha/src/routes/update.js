@@ -86,7 +86,7 @@ router.put('/linha/:id', async (req, res) => {
                 params: req.params,
                 attrs: req.body
             },
-            e.stack
+            error
         )
         res.send(message)
     }
