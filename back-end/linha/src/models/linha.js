@@ -204,6 +204,28 @@ linhaSchema.statics.findLinhas = async function (org, ciclo) {
                     preserveNullAndEmptyArrays: true
                 }
             }
+            /** Faz o lookup para trazer a versão */
+            ,{
+                $lookup: {
+                    from: 'versao',
+                    localField: 'linha_versao',
+                    foreignField: '_id',
+                    pipeline:[
+                        {
+                            $project: {
+                                'versao_nome': 1
+                            }
+                        }
+                    ],
+                    as: 'etapa',
+                }
+            }
+            ,{
+                $unwind: {
+                    path: '$etapa',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
             ,{
                     $project: {
                         createdAt: 0,
@@ -215,6 +237,7 @@ linhaSchema.statics.findLinhas = async function (org, ciclo) {
                         linha_proprietario: 0,
                         linha_fornecedor: 0,
                         linha_etapa: 0,
+                        linha_versao: 0
                     }
             },
     ]).exec()
