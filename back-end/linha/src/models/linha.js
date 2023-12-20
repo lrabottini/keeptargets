@@ -191,7 +191,8 @@ linhaSchema.statics.findLinhas = async function (org, ciclo) {
                     pipeline:[
                         {
                             $project: {
-                                'situacao_nome': 1
+                                'situacao_nome': 1,
+                                'situacao_cor': 1
                             }
                         }
                     ],
@@ -223,6 +224,28 @@ linhaSchema.statics.findLinhas = async function (org, ciclo) {
             ,{
                 $unwind: {
                     path: '$versao',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+            /** Faz o lookup para trazer a classificacao */
+            ,{
+                $lookup: {
+                    from: 'classificacao',
+                    localField: 'linha_classificacao',
+                    foreignField: '_id',
+                    pipeline:[
+                        {
+                            $project: {
+                                'classificacao_nome': 1
+                            }
+                        }
+                    ],
+                    as: 'classificacao',
+                }
+            }
+            ,{
+                $unwind: {
+                    path: '$classificacao',
                     preserveNullAndEmptyArrays: true
                 }
             }
