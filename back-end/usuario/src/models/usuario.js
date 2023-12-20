@@ -82,7 +82,8 @@ usuarioSchema.statics.findUsuarios = async function (id) {
                     $concat: ["$usuario_nome", " ", "$usuario_sobrenome"]
                   }
                 }
-              }    ]).exec()
+            }
+    ]).exec()
 
     return response
 }

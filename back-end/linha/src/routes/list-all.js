@@ -4,9 +4,9 @@ import { Linha } from '../models/linha.js'
 
 const router = express.Router()
 
-router.get('/linha', async (req, res) => {
+router.get('/linha/:org/:ciclo/', async (req, res) => {
     try {
-        const linha = await Linha.findLinhas(req.query.versao)
+        const linha = await Linha.findLinhas(req.params.org, req.params.ciclo)
 
         res.send(linha)
     } catch (e) {

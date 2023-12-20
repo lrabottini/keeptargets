@@ -2,6 +2,7 @@ import express from 'express'
 import { validationResult } from 'express-validator'
 import { Linha } from '../models/linha.js'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, toFormattedDate, MessageLevel } from '@keeptargets/common'
+import mongoose from 'mongoose'
 
 const router = express.Router()
 
@@ -14,13 +15,15 @@ router.put('/linha/:id', async (req, res) => {
             await Linha.findById(req.params.id)
                 .then((linha) => {
                     linha.set({
-                        linha_versao: req.body.versao,
-                        linha_classificacao: req.body.classificacao,
-                        linha_centro_de_custo: req.body.cc,
-                        linha_tipo_de_despesa: req.body.tipo_de_despesa,
-                        linha_estrutura: req.body.estrutura,
-                        linha_proprietario: req.body.proprietario,
-                        linha_fornecedor: req.body.fornecedor,
+                        linha_org: new mongoose.Types.ObjectId(req.body.org),
+                        linha_ciclo: new mongoose.Types.ObjectId(req.body.ciclo),
+                        linha_versao: new mongoose.Types.ObjectId(req.body.versao),
+                        linha_classificacao: new mongoose.Types.ObjectId(req.body.classificacao),
+                        linha_centro_de_custo: new mongoose.Types.ObjectId(req.body.cc),
+                        linha_tipo_de_despesa: new mongoose.Types.ObjectId(req.body.tipo_de_despesa),
+                        linha_estrutura: new mongoose.Types.ObjectId(req.body.estrutura),
+                        linha_proprietario: new mongoose.Types.ObjectId(req.body.proprietario),
+                        linha_fornecedor: new mongoose.Types.ObjectId(req.body.fornecedor),
                         linha_descricao: req.body.descricao,
                         linha_inicio_periodo: toFormattedDate(req.body.start),
                         linha_fim_periodo: toFormattedDate(req.body.end),
@@ -34,7 +37,7 @@ router.put('/linha/:id', async (req, res) => {
                             valor_final_perc: req.body.valor_final_perc,
                             valor_final_valor: req.body.valor_final_valor,
                         },
-                        linha_etapa: req.body.etapa,
+                        linha_etapa: new mongoose.Types.ObjectId(req.body.etapa),
                         linha_observacao: req.body.obs
                     })
                     

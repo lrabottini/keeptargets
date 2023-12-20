@@ -1,8 +1,10 @@
 import mongoose, { Schema, SchemaType } from "mongoose"
 
 const linhaSchema = new mongoose.Schema({
+    linha_org: mongoose.Types.ObjectId,
+    linha_ciclo: mongoose.Types.ObjectId,
     linha_versao: mongoose.Types.ObjectId,
-    linha_classificacao: String,
+    linha_classificacao: mongoose.Types.ObjectId,
     linha_centro_de_custo: mongoose.Types.ObjectId,
     linha_tipo_de_despesa: mongoose.Types.ObjectId,
     linha_estrutura: mongoose.Types.ObjectId,
@@ -48,12 +50,13 @@ const linhaSchema = new mongoose.Schema({
     },
 }, {collection: 'linha'})
 
-linhaSchema.statics.findLinha = async function (id) {
+linhaSchema.statics.findLinhas = async function (org, ciclo) {
     const response = await this.aggregate([
             /** Faz o match para trazer o documento que corresponde ao 'id' informado */
             {
                 $match: {
-                    _id: new mongoose.Types.ObjectId(id)
+                    linha_org : new mongoose.Types.ObjectId(org),
+                    linha_ciclo: new mongoose.Types.ObjectId(ciclo)
                 }
             }
             /** Faz o lookup para trazer as informações do centro de custo */
@@ -72,122 +75,10 @@ linhaSchema.statics.findLinha = async function (id) {
                     as: 'centro_de_custo',
                 }
             }
-            /** Faz o lookup para trazer o tipo de despesa */
             ,{
-                $lookup: {
-                    from: 'tipo_de_despesa',
-                    localField: 'linha_tipo_de_despesa',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'tipodespesa_descr': 1
-                            }
-                        }
-                    ],
-                    as: 'tipo_de_despesa',
-                }
-            }
-            /** Faz o lookup para trazer a estrutura */
-            ,{
-                $lookup: {
-                    from: 'estrutura',
-                    localField: 'linha_estrutura',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'estrut_descr': 1
-                            }
-                        }
-                    ],
-                    as: 'estrutura',
-                }
-            }
-            /** Faz o lookup para trazer o proprietario */
-            ,{
-                $lookup: {
-                    from: 'proprietario',
-                    localField: 'linha_proprietario',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'prop_nome': 1
-                            }
-                        }
-                    ],
-                    as: 'proprietario',
-                }
-            }
-            /** Faz o lookup para trazer as informações do fornecedor */
-            ,{
-                $lookup: {
-                    from: 'fornecedor',
-                    localField: 'linha_fornecedor',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'forn_descr': 1
-                            }
-                        }
-                    ],
-                    as: 'fornecedor',
-                }
-            }
-            /** Faz o lookup para trazer a etapa */
-            ,{
-                $lookup: {
-                    from: 'situacao',
-                    localField: 'linha_etapa',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'sit_descr': 1
-                            }
-                        }
-                    ],
-                    as: 'etapa',
-                }
-            }
-            ,{
-                $project: {
-                    linha_centro_de_custo: 0,
-                    linha_tipo_de_despesa: 0,
-                    linha_estrutura: 0,
-                    linha_proprietario: 0,
-                    linha_fornecedor: 0,
-                    linha_etapa: 0
-                }
-            }
-    ]).exec()
-    return response[0]
-}
-
-linhaSchema.statics.findLinhas = async function (id) {
-    const response = await this.aggregate([
-            /** Faz o match para trazer o documento que corresponde ao 'id' informado */
-            {
-                $match: {
-                    linha_versao: new mongoose.Types.ObjectId(id)
-                }
-            }
-            /** Faz o lookup para trazer as informações do centro de custo */
-            ,{
-                $lookup: {
-                    from: 'centro_de_custo',
-                    localField: 'linha_centro_de_custo',
-                    foreignField: '_id',
-                    pipeline:[
-                        {
-                            $project: {
-                                'centrocusto_descr': 1
-                            }
-                        }
-                    ],
-                    as: 'centro_de_custo',
+                $unwind: {
+                    path: '$centro_de_custo',
+                    preserveNullAndEmptyArrays: true
                 }
             }
             /** Faz o lookup para trazer o tipo de despesa */
@@ -206,6 +97,12 @@ linhaSchema.statics.findLinhas = async function (id) {
                     as: 'tipo_de_despesa',
                 }
             }
+            ,{
+                $unwind: {
+                    path: '$tipo_de_despesa',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
             /** Faz o lookup para trazer a estrutura */
             ,{
                 $lookup: {
@@ -215,27 +112,52 @@ linhaSchema.statics.findLinhas = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'estrut_descr': 1
+                                'estrutura_descr': 1
                             }
                         }
                     ],
                     as: 'estrutura',
                 }
             }
+            ,{
+                $unwind: {
+                    path: '$estrutura',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
             /** Faz o lookup para trazer o proprietario */
             ,{
                 $lookup: {
-                    from: 'proprietario',
+                    from: 'usuario',
                     localField: 'linha_proprietario',
                     foreignField: '_id',
+                    let: {
+                        usuario_nomeCompleto: {
+                            $concat: ["$nomeCompleto", " ", "$usuario_sobrenome"]
+                        }
+                    },
                     pipeline:[
                         {
                             $project: {
-                                'prop_nome': 1
+                                usuario_nome: 1,
+                                usuario_sobrenome: 1
+                            }
+                        },
+                        {
+                            $addFields: {
+                              usuario_nomeCompleto: {
+                                $concat: ["$usuario_nome", " ", "$usuario_sobrenome"]
+                              }
                             }
                         }
                     ],
-                    as: 'proprietario',
+                    as: 'proprietario'
+                }
+            }
+            ,{
+                $unwind: {
+                    path: '$proprietario',
+                    preserveNullAndEmptyArrays: true
                 }
             }
             /** Faz o lookup para trazer as informações do fornecedor */
@@ -247,11 +169,17 @@ linhaSchema.statics.findLinhas = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'forn_descr': 1
+                                'fornecedor_nome': 1
                             }
                         }
                     ],
                     as: 'fornecedor',
+                }
+            }
+            ,{
+                $unwind: {
+                    path: '$fornecedor',
+                    preserveNullAndEmptyArrays: true
                 }
             }
             /** Faz o lookup para trazer a etapa */
@@ -263,24 +191,32 @@ linhaSchema.statics.findLinhas = async function (id) {
                     pipeline:[
                         {
                             $project: {
-                                'sit_descr': 1
+                                'situacao_nome': 1
                             }
                         }
                     ],
                     as: 'etapa',
                 }
             }
-            // ,{
-            //     $project: {
-            //         linha_versao: 0,
-            //         linha_centro_de_custo: 0,
-            //         linha_tipo_de_despesa: 0,
-            //         linha_estrutura: 0,
-            //         linha_proprietario: 0,
-            //         linha_fornecedor: 0,
-            //         linha_etapa: 0
-            //     }
-            // }
+            ,{
+                $unwind: {
+                    path: '$etapa',
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+            ,{
+                    $project: {
+                        createdAt: 0,
+                        lastModified: 0,
+                        linha_classificacao: 0,
+                        linha_centro_de_custo: 0,
+                        linha_tipo_de_despesa: 0,
+                        linha_estrutura: 0,
+                        linha_proprietario: 0,
+                        linha_fornecedor: 0,
+                        linha_etapa: 0,
+                    }
+            },
     ]).exec()
 
     return response
