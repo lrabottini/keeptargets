@@ -217,28 +217,28 @@ linhaSchema.statics.findLinhas = async function (org, ciclo) {
                             }
                         }
                     ],
-                    as: 'etapa',
+                    as: 'versao',
                 }
             }
             ,{
                 $unwind: {
-                    path: '$etapa',
+                    path: '$versao',
                     preserveNullAndEmptyArrays: true
                 }
             }
             ,{
-                    $project: {
-                        createdAt: 0,
-                        lastModified: 0,
-                        linha_classificacao: 0,
-                        linha_centro_de_custo: 0,
-                        linha_tipo_de_despesa: 0,
-                        linha_estrutura: 0,
-                        linha_proprietario: 0,
-                        linha_fornecedor: 0,
-                        linha_etapa: 0,
-                        linha_versao: 0
-                    }
+                $project: {
+                    createdAt: 0,
+                    lastModified: 0,
+                    linha_classificacao: 0,
+                    linha_centro_de_custo: 0,
+                    linha_tipo_de_despesa: 0,
+                    linha_estrutura: 0,
+                    linha_proprietario: 0,
+                    linha_fornecedor: 0,
+                    linha_etapa: 0,
+                    linha_versao: 0
+                }
             },
     ]).exec()
 
