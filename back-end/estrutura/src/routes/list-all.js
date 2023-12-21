@@ -7,7 +7,6 @@ const router = express.Router()
 router.get('/estrutura/all/:org', async (req, res) => {
     try {
         const estrutura = await Estrutura.returnTree(req.params.org)
-
         const estruturaAplanada = aplanarEstrutura(estrutura)
 
         res.send(estruturaAplanada)
