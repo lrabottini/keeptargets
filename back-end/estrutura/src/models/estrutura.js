@@ -194,7 +194,7 @@ estruturaSchema.statics.returnTree = async function (id) {
                   $mergeObjects: [
                     '$$child',
                     {
-                      responsavel_estrutura: {
+                      responsavel: {
                         $arrayElemAt: ['$responsavel', 0]
                       }
                     }
