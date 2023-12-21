@@ -5,12 +5,7 @@ const estruturaSchema = new mongoose.Schema({
     estrutura_cod: String,
     estrutura_descr: String,
     estrutura_parent: SchemaTypes.Mixed,
-    estrutura_responsavel: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: 'Usuario'
-        }
-    ],
+    estrutura_responsavel: mongoose.Types.ObjectId,
     createdAt: {
         type: Date,
         default: Date.now()
@@ -182,10 +177,14 @@ estruturaSchema.statics.returnTree = async function (id) {
             }
         }
         ,{
+            $unwind: {
+                path: '$responsavel',
+                preserveNullAndEmptyArrays: true
+            }
+        }
+        ,{
           $addFields: {
-            responsavel: {
-              $arrayElemAt: ['$responsavel', 0]
-            },
+            responsavel: '$responsavel',
             children: {
               $map: {
                 input: '$children',
@@ -194,9 +193,7 @@ estruturaSchema.statics.returnTree = async function (id) {
                   $mergeObjects: [
                     '$$child',
                     {
-                      responsavel: {
-                        $arrayElemAt: ['$responsavel', 0]
-                      }
+                      responsavel: '$responsavel'
                     }
                   ]
                 }
@@ -266,8 +263,8 @@ estruturaSchema.statics.returnTree = async function (id) {
         },
         {
           $sort: { level: 1, "_id": 1 }
-        },
-        {
+        }
+        ,{
           $project: {
             _id: 1,
             estrutura_parent: 1,
