@@ -14,10 +14,11 @@ router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
         if (result.isEmpty()){
             const estrutura = new Estrutura()
 
-            estrutura.estrutura_org = req.body.org 
-            estrutura.estrutura_cod = req.body.codigo
+            estrutura.estrutura_org = new mongoose.Types.ObjectId(req.body.org)
+            estrutura.estrutura_cod = new mongoose.Types.ObjectId(req.body.codigo)
             estrutura.estrutura_descr = req.body.descricao
             estrutura.estrutura_parent = Number(req.body.parent) === 0 || req.body.parent === null ? Number(req.body.parent) : new mongoose.Types.ObjectId(req.body.parent)
+            estrutura.estrutura_responsavel = new mongoose.Types.ObjectId(req.body.responsavel)
 
             await estrutura.save()
             
