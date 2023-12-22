@@ -11,15 +11,28 @@ async function criarEstruturaHierarquica(documentos) {
 
         // Criar um mapa de pais e filhos
         documentos.forEach(doc => {
-            const parentId = doc.estrutura_parent || 'root';
+            const parentId = doc.parent || 'root';
             if (!mapaPaisFilhos[parentId]) {
                 mapaPaisFilhos[parentId] = [];
             }
             mapaPaisFilhos[parentId].push({ ...doc });
         });
 
-        // Achatando a estrutura
-        return achatador(mapaPaisFilhos, 'root', 0);
+        // Achatar a estrutura
+        const result = achatador(mapaPaisFilhos, 'root', 0);
+
+        // Identifica se o parent tem algum filho
+        for (let index = 0; index < result.length-1; index++){
+            let element = result[index]
+            
+            const hasChildren = result[index+1].parent.toString() === result[index]._id.toString()
+
+            element['hasChildren'] = hasChildren
+            result[index] = element
+        }
+        result[result.length-1]['hasChildren'] = false
+
+        return result
     } catch (error) {
         console.error('Erro:', error);
         throw error;
