@@ -21,16 +21,34 @@ async function criarEstruturaHierarquica(documentos) {
         // Achatar a estrutura
         const result = achatador(mapaPaisFilhos, 'root', 0);
 
-        // Identifica se o parent tem algum filho
-        for (let index = 0; index < result.length-1; index++){
-            let element = result[index]
-            
-            const hasChildren = result[index+1].parent.toString() === result[index]._id.toString()
+        // Cria campos informando
+        // - Se o nó tem algum filho
+        // - Descrição para apresentar o item em um dropdowm de forma idendata
+        // - Prefixo para controlar relação pai e filho
+        
+        const preffixArray = []
+        let prefix = 1
 
-            element['hasChildren'] = hasChildren
-            result[index] = element
+        for (let index = 0; index < result.length; index++){
+            if (result.length > index + 1) {
+                result[index]['hasChildren'] = result[index+1].parent.toString() === result[index]._id.toString()
+                result[index]['ddIdentation'] = result[index].level > 0
+                    ? ' '.repeat(result[index].level * 4).concat('|----', result[index].descr)
+                    : result[index].descr
+            }
+            
+            if (result[index].parent === 0) {
+                preffixArray.push({ key: result[index]._id.toString(), value: prefix})
+                result[index]['preffix'] = prefix.toString()
+                prefix++
+            } else {
+                const offset = preffixArray.find(obj => obj.key === result[index].parent.toString())
+                result[index]['preffix'] = offset.value.toString().concat(prefix.toString())
+                preffixArray.push({ key: result[index]._id.toString(), value: result[index]['preffix']})
+            }
         }
-        result[result.length-1]['hasChildren'] = false
+
+        order = 1
 
         return result
     } catch (error) {

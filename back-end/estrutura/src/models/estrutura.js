@@ -58,7 +58,8 @@ estruturaSchema.statics.listEstrutura = async function (org) {
         }
         ,{
             $addFields: {
-              parent: "$estrutura_parent" // Renomeia estrutura_parent para parent
+              parent: "$estrutura_parent",
+              descr: "$estrutura_descr"
             }
         }
         ,{
