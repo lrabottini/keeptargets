@@ -30,8 +30,13 @@ async function docHierarchy(documentos) {
                 result[index]['ddIdentation'] = result[index].level > 0
                     ? ' '.repeat(result[index].level * 4).concat('|----', result[index].descr)
                     : result[index].descr
+            } else {
+                result[index]['hasChildren'] = false
+                result[index]['ddIdentation'] = result[index].level > 0
+                    ? ' '.repeat(result[index].level * 4).concat('|----', result[index].descr)
+                    : result[index].descr
             }
-            
+                
             if (result[index].parent === 0) {
                 prefixArray.push({ key: result[index]._id.toString(), value: prefix})
                 result[index]['preffix'] = prefix.toString()
