@@ -39,12 +39,12 @@ async function docHierarchy(documentos) {
                 
             if (result[index].parent === 0) {
                 prefixArray.push({ key: result[index]._id.toString(), value: prefix})
-                result[index]['preffix'] = prefix.toString()
+                result[index]['prefix'] = prefix.toString()
                 prefix++
             } else {
-                const offset = prefixArray.find(obj => obj.key === result[index].parent.toString())
-                result[index]['preffix'] = offset.value.toString().concat(prefix.toString())
-                prefixArray.push({ key: result[index]._id.toString(), value: result[index]['preffix']})
+                const element = prefixArray.find(obj => obj.key === result[index].parent.toString())
+                result[index]['prefix'] = element.value.toString().concat((prefixArray.length + 1).toString())
+                prefixArray.push({ key: result[index]._id.toString(), value: result[index]['prefix']})
             }
         }
 
