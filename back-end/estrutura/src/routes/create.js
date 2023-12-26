@@ -19,6 +19,7 @@ router.post('/estrutura', fieldValidation, hasOrg, async (req, res) => {
             estrutura.estrutura_descr = req.body.descricao
             estrutura.estrutura_parent = Number(req.body.parent) === 0 || req.body.parent === null ? Number(req.body.parent) : new mongoose.Types.ObjectId(req.body.parent)
             estrutura.estrutura_responsavel = new mongoose.Types.ObjectId(req.body.responsavel)
+            estrutura.estrutura_allowPlan = req.body.permite_plano
 
             await estrutura.save()
             

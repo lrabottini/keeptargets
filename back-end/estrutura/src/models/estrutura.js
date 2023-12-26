@@ -6,6 +6,10 @@ const estruturaSchema = new mongoose.Schema({
     estrutura_descr: String,
     estrutura_parent: SchemaTypes.Mixed,
     estrutura_responsavel: mongoose.Types.ObjectId,
+    estrutura_allowPlan: {
+        type: Boolean,
+        default: true
+    },
     createdAt: {
         type: Date,
         default: Date.now()
