@@ -1,4 +1,6 @@
 async function docHierarchy(documentos) {
+    let order = 1
+    
     try {
         const mapaPaisFilhos = {};
 
@@ -49,18 +51,17 @@ async function docHierarchy(documentos) {
         throw error;
     }
     
-}
-
-// Função recursiva para achatamento da estrutura
-function flattener(mapa, parentId, level) {
-    const filhos = mapa[parentId] || [];
-    let resultado = [];
-    for (const filho of filhos) {
-        resultado.push({ ...filho, order, level });
-        order = order + 1
-        resultado = resultado.concat(flattener(mapa, filho._id, level + 1));
+    // Função recursiva para achatamento da estrutura
+    function flattener(mapa, parentId, level) {
+        const filhos = mapa[parentId] || [];
+        let resultado = [];
+        for (const filho of filhos) {
+            resultado.push({ ...filho, order, level });
+            order = order + 1
+            resultado = resultado.concat(flattener(mapa, filho._id, level + 1));
+        }
+        return resultado;
     }
-    return resultado;
 }
 
 export { docHierarchy }
