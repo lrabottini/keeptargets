@@ -3,7 +3,7 @@ import { ExecutionMessage, ExecutionTypes, ExecutionStatus, MessageLevel } from 
 import { PlanoComercial } from '../models/plano-comercial.js'
 const router = express.Router()
 
-router.get('/planocomercialall/', async (req, res) => {
+router.get('/planoComercial/all', async (req, res) => {
     try {
         const planoComercial = await PlanoComercial.find()
 
@@ -21,7 +21,7 @@ router.get('/planocomercialall/', async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Não foi possível buscar planos.',
+            'Não foi possível listar planos comerciais.',
             req.params,
             error 
         )

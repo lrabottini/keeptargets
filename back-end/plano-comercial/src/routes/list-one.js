@@ -1,12 +1,12 @@
 import express from 'express'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
-import { Organizacao } from '../models/organizacao.js'
+import { PlanoComercial } from '../models/plano-comercial.js'
 
 const router = express.Router()
 
-router.get('/organizacao/:id', async (req, res) => {
+router.get('/planocomercial/:id', async (req, res) => {
     try {
-        await Organizacao.findById(req.params.id)
+        await PlanoComercial.findById(req.params.id)
             .then((result) => {
                 res.send(result)
             })
@@ -15,7 +15,7 @@ router.get('/organizacao/:id', async (req, res) => {
                     MessageLevel.LEVEL_WARNING,
                     ExecutionStatus.ERROR,
                     ExecutionTypes.LIST,
-                    'Organização não encontrada.',
+                    'Plano Comercial não encontrada.',
                     req.params,
                     []
                 )
@@ -35,7 +35,7 @@ router.get('/organizacao/:id', async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.LIST,
-            'Erro ao buscar organização.',
+            'Não foi possível listar plano comercial.',
             req.params,
             error
         )

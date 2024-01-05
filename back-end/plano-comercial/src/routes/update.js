@@ -1,36 +1,33 @@
 import express from 'express'
 import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
-import { fieldValidation, validaCNPJ } from '../middleware/valida-chamada.js'
-import { Organizacao } from '../models/organizacao.js'
+import { PlanoComercial } from '../models/plano-comercial.js'
 import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.put('/organizacao/:id', fieldValidation, validaCNPJ, async (req, res) => {
+router.put('/planocomercial/:id', fieldValidation, validaCNPJ, async (req, res) => {
     try {
         let message = ''
 
         const result = validationResult(req)
         if (result.isEmpty()){
-            await Organizacao.findById(req.params.id)
-                .then((organizacao) => {
-                    organizacao.set({
-                        organizacao_responsavel: new mongoose.Types.ObjectId(req.body.responsavel),
-                        organizacao_cnpj: req.body.cnpj,
-                        organizacao_nome: req.body.nome,
-                        organizacao_situacao: new mongoose.Types.ObjectId(req.body.situacao),
-                        organizacao_plano: req.body.plano,
-                        organizacao_data_expiração: toFormattedDate(req.body.expiracao),
+            await PlanoComercial.findById(req.params.id)
+                .then((plano) => {
+                    plano.set({
+                        plano_condicoes: req.body.condicoes
+                        plano_nome: req.body.nome
+                        plano_valor: req.body.valor
+                        lastModified: Date.now()
                     })
                     
-                    organizacao.save()
+                    plano.save()
             
                     message = new ExecutionMessage(
                         MessageLevel.LEVEL_INFO,
                         ExecutionStatus.SUCCESS,
                         ExecutionTypes.UPDATE,
-                        'Organização atualizada com sucesso.',
+                        'Plano Comercial atualizado com sucesso.',
                         {},
                         result.array()
                     )
@@ -40,7 +37,7 @@ router.put('/organizacao/:id', fieldValidation, validaCNPJ, async (req, res) => 
                 MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.UPDATE,
-                'Não foi possível atualizar organização.',
+                'Não foi possível atualizar plano comercial.',
                 {
                     params: req.params,
                     attrs: req.body
@@ -62,7 +59,7 @@ router.put('/organizacao/:id', fieldValidation, validaCNPJ, async (req, res) => 
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.UPDATE,
-            'Não foi possível atualizar organização.',
+            'Não foi possível atualizar plano comercial.',
             {
                 params: req.params,
                 attrs: req.body

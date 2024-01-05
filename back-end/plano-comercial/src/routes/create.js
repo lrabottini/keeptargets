@@ -2,32 +2,28 @@ import express from 'express'
 
 import { validationResult } from 'express-validator'
 import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel, toFormattedDate } from '@keeptargets/common'
-import { fieldValidation, validaCNPJ } from '../middleware/valida-chamada.js'
-import { Organizacao } from '../models/organizacao.js'
+import { PlanoComercial } from '../models/plano-comercial.js'
 import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.post('/organizacao', fieldValidation, validaCNPJ, async (req, res) => {
+router.post('/planocomercial', async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
-            const organizacao = new Organizacao()
+            const plano = new PlanoComercial()
 
-            organizacao.organizacao_nome = req.body.nome
-            organizacao.organizacao_cnpj = req.body.cnpj
-            organizacao.organizacao_situacao = new mongoose.Types.ObjectId(req.body.situacao)
-            organizacao.organizacao_plano = req.body.plano
-            organizacao.organizacao_data_expiração = toFormattedDate(req.body.expiracao)
-            organizacao.organizacao_responsavel = new mongoose.Types.ObjectId(req.body.responsavel)
+            plano.plano_condicoes = req.body.condicoes
+            plano.plano_nome = req.body.nome
+            plano.plano_valor = req.body.valor
 
-            await organizacao.save()
+            await plano.save()
             
             const message = new ExecutionMessage(
                 MessageLevel.LEVEL_INFO,
                 ExecutionStatus.SUCCESS,
                 ExecutionTypes.CREATE,
-                'Organizacao criada com sucesso.',
+                'Plano criado com sucesso.',
                 req.body,
                 result.array()
             )
@@ -37,7 +33,7 @@ router.post('/organizacao', fieldValidation, validaCNPJ, async (req, res) => {
                 MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
                 ExecutionTypes.CREATE,
-                'Não foi possível criar organizacao.',
+                'Não foi possível criar plano.',
                 req.body,
                 result.array()
             )
@@ -56,7 +52,7 @@ router.post('/organizacao', fieldValidation, validaCNPJ, async (req, res) => {
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
             ExecutionTypes.CREATE,
-            'Não foi possível criar organizacao.',
+            'Não foi possível criar plano.',
             req.params,
             error 
         )
