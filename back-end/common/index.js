@@ -16,3 +16,5 @@ export * from './src/services/nats-wrapper.js'
 export * from './src/utils/format.js'
 export * from './src/utils/structure.js'
 export * from './src/utils/flattener.js'
+
+export * from './src/middleware/current-user.js'
