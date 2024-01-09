@@ -25,14 +25,15 @@
   },
   "dependencies": {
     "@keeptargets/common": "^1.0.1",
+    "cookie-session": "^2.0.0",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.1",
     "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.5",
     "node-dev": "^8.0.0",
     "node-nats-streaming": "^0.3.2",
-    "nodemon": "^3.0.1",
-    "cookie-session": "^2.0.0",
-    "jsonwebtoken": "^9.0.0"
+    "nodemon": "^3.0.1"
   }
 }

@@ -13,20 +13,20 @@ const router = express.Router();
 
 router.post(
   '/api/v1/usuario/signin',
-  [
-    body('email').isEmail().withMessage('Email must be valid'),
-    body('password')
-      .trim()
-      .notEmpty()
-      .withMessage('You must supply a password'),
-  ],
+//   [
+//     body('email').isEmail().withMessage('Email must be valid'),
+//     body('password')
+//       .trim()
+//       .notEmpty()
+//       .withMessage('You must supply a password'),
+//   ],
   async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
             const { email, password } = req.body;
     
-            const existingUser = await Usuario.findOne({ usuario_email: email });
+            const existingUser = await Usuario.findOne({ usuario_email: atob(email) });
             if (!existingUser) {
                 const message = new ExecutionMessage(
                     MessageLevel.LEVEL_INFO,
