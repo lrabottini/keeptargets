@@ -40,7 +40,7 @@ router.post(
             } else {
                 const passwordsMatch = await Password.compare(
                     existingUser.usuario_senha,
-                    password
+                    password.toString()
                 );
                 if (!passwordsMatch) {
                     const message = new ExecutionMessage(
@@ -78,9 +78,9 @@ router.post(
             }
         } else {
             const message = new ExecutionMessage(
-                MessageLevel.LEVEL_WARNING,
+                MessageLevel.LEVEL_ERROR,
                 ExecutionStatus.ERROR,
-                ExecutionTypes.CREATE,
+                ExecutionTypes.LIST,
                 'Não foi possível autenticar usuário.',
                 req.body,
                 result.array()
@@ -99,7 +99,7 @@ router.post(
         const message = new ExecutionMessage(
             MessageLevel.LEVEL_ERROR,
             ExecutionStatus.ERROR,
-            ExecutionTypes.CREATE,
+            ExecutionTypes.LIST,
             'Não foi possível autenticar usuário.',
             req.params,
             error 
