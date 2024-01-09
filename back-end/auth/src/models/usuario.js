@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { Password } from "../services/password.js";
 
 const usuarioSchema = new mongoose.Schema({
     usuario_org: mongoose.Types.ObjectId,
@@ -23,22 +22,12 @@ const usuarioSchema = new mongoose.Schema({
     collection: 'usuario',
     toJSON: {
         transform: function (doc, ret) {
-            delete ret.usuario_senha
-            delete ret.__v
-            delete ret.createdAt
-            delete ret.lastModified
+            delete ret.usuario_senha;
+            delete ret.__v;
         }
     }
 }
 )
-
-usuarioSchema.pre("save", async function (done) {
-    if (this.isModified("usuario_senha")) {
-        const hashed = await Password.toHash(this.get("usuario_senha"));
-        this.set("usuario_senha", hashed);
-    }
-    done();
-});
 
 usuarioSchema.statics.findUsuarios = async function (id) {
     const response = await this.aggregate([
