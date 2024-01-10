@@ -12,13 +12,13 @@ const router = express.Router();
 
 router.get(
     '/api/v1/auth/signin',
-    [
-        body('email').isEmail().withMessage('Email must be valid'),
-        body('password')
-            .trim()
-            .notEmpty()
-            .withMessage('You must supply a password'),
-    ],
+    // [
+    //     body('email').isEmail().withMessage('Email must be valid'),
+    //     body('password')
+    //         .trim()
+    //         .notEmpty()
+    //         .withMessage('You must supply a password'),
+    // ],
     async (req, res) => {
         try {
             const result = validationResult(req)
