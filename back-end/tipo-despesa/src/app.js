@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieSession from 'cookie-session'
 
 import { createTipoDespesa } from './routes/create.js'
 import { deleteTipoDespesa } from './routes/delete.js'
@@ -10,6 +11,8 @@ const app = express();
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json());
+
+app.use(cookieSession({ signed: false, secure: process.env.NODE_ENV === 'prod' }));
 
 app.set('trust proxy', true);
 

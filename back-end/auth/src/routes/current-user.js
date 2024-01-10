@@ -3,7 +3,7 @@ import { curretUser } from '../middleware/current-user.js';
 
 const router = express.Router();
 
-router.get('/api/users/currentuser', curretUser, (req, res) => {
+router.get('/api/v1/auth/currentuser', curretUser, (req, res) => {
   res.send({currentUser: req.currentUser || null})
 });
 

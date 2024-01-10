@@ -3,10 +3,11 @@ import { ExecutionMessage, ExecutionTypes, ExecutionStatus, MessageLevel } from 
 import { TipoDespesa } from '../models/tipo-despesa.js'
 import { validationResult } from 'express-validator'
 import { validaParametros } from '../middleware/valida-chamada.js'
+import { requireAuth } from '../middleware/require-auth.js'
 
 const router = express.Router()
 
-router.get('/tipodespesa/', validaParametros, async (req, res) => {
+router.get('/tipodespesa/', requireAuth, validaParametros, async (req, res) => {
     try {
         const result = validationResult(req)
         if (result.isEmpty()){
@@ -17,7 +18,7 @@ router.get('/tipodespesa/', validaParametros, async (req, res) => {
             const message = new ExecutionMessage(
                 MessageLevel.LEVEL_WARNING,
                 ExecutionStatus.ERROR,
-                ExecutionTypes.DELETE,
+                ExecutionTypes.LIST,
                 'Não foi possível buscar tipos de despesa.',
                 req.query,
                 result.array() 
