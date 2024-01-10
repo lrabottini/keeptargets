@@ -10,7 +10,7 @@ dotenv.config()
 
 const router = express.Router();
 
-router.get(
+router.post(
     '/api/v1/auth/signin',
     // [
     //     body('email').isEmail().withMessage('Necessário informar um email válido.'),
