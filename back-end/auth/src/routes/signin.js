@@ -66,6 +66,7 @@ router.post(
                         req.session = {
                             jwt: userJwt,
                         };
+                        console.log(req.session.jwt)
         
                         // res.cookie("access_token", userJwt, {
                         //     httpOnly: true,
