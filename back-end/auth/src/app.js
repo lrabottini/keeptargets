@@ -22,7 +22,7 @@ app.use(signinRouter);
 app.use(signoutRouter);
 
 app.all('*', async (req, res) => {
-    throw new Error();
+    res.status(404).send('Ops')
 });
 
 export { app }

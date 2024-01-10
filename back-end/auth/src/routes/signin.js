@@ -12,22 +12,20 @@ const router = express.Router();
 
 router.get(
     '/api/v1/auth/signin',
-    [
-        body('email').isEmail().withMessage('Necessário informar um email válido.'),
-        body('password')
-            .trim()
-            .notEmpty()
-            .withMessage('Necessário informar uma senha válida.'),
-    ],
+    // [
+    //     body('email').isEmail().withMessage('Necessário informar um email válido.'),
+    //     body('password')
+    //         .trim()
+    //         .notEmpty()
+    //         .withMessage('Necessário informar uma senha válida.'),
+    // ],
     async (req, res) => {
         try {
-            console.log(req.body)
-            console.log(req.params)
             const result = validationResult(req)
             if (result.isEmpty()){
                 const { email, password } = req.body;
         
-                const existingUser = await Usuario.findOne({ usuario_email: email });
+                const existingUser = await Usuario.findOne({ usuario_email: atob(email) });
                 if (!existingUser) {
                     const message = new ExecutionMessage(
                         MessageLevel.LEVEL_WARNING,
