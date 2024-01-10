@@ -6,9 +6,6 @@ import { deleteUsuario } from './routes/delete.js'
 import { listOneUsuario } from './routes/list-one.js'
 import { listAllUsuario } from './routes/list-all.js'
 import { updateUsuario } from './routes/update.js'
-import { currentUserRouter } from './routes/current-user.js';
-import { signinRouter } from './routes/signin.js';
-import { signoutRouter } from './routes/signout.js';
 
 const app = express();
 
@@ -23,10 +20,6 @@ app.use(listAllUsuario)
 app.use(createUsuario)
 app.use(deleteUsuario)
 app.use(updateUsuario)
-
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
 
 app.all('*', async (req, res) => {
   throw new Error();
