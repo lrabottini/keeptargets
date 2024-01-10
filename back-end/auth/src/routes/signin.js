@@ -22,6 +22,7 @@ router.get(
     async (req, res) => {
         try {
             console.log(req.body)
+            console.log(req.params)
             const result = validationResult(req)
             if (result.isEmpty()){
                 const { email, password } = req.body;
