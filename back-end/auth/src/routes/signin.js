@@ -12,13 +12,13 @@ const router = express.Router();
 
 router.get(
     '/api/v1/auth/signin',
-    // [
-    //     body('email').isEmail().withMessage('Email must be valid'),
-    //     body('password')
-    //         .trim()
-    //         .notEmpty()
-    //         .withMessage('You must supply a password'),
-    // ],
+    [
+        body('email').isEmail().withMessage('Necessário informar um email válido.'),
+        body('password')
+            .trim()
+            .notEmpty()
+            .withMessage('Necessário informar uma senha válida.'),
+    ],
     async (req, res) => {
         try {
             const result = validationResult(req)
@@ -27,47 +27,62 @@ router.get(
         
                 const existingUser = await Usuario.findOne({ usuario_email: email });
                 if (!existingUser) {
-                    throw new Error('Usuário inválido.');
+                    const message = new ExecutionMessage(
+                        MessageLevel.LEVEL_WARNING,
+                        ExecutionStatus.ERROR,
+                        ExecutionTypes.LIST,
+                        'Não foi possível localizar usuário.',
+                        {},
+                        {}
+                    )
+                    res.status(404).send(message);
+                } else {
+                    const passwordsMatch = await Password.compare(
+                        existingUser.usuario_senha,
+                        password
+                    )
+    
+                    if (!passwordsMatch) {
+                        const message = new ExecutionMessage(
+                            MessageLevel.LEVEL_WARNING,
+                            ExecutionStatus.ERROR,
+                            ExecutionTypes.LIST,
+                            'A senha informada não confere.',
+                            {},
+                            {}
+                        )
+                        res.status(404).send(message);
+                    } else {
+                        // Generate JWT
+                        const userJwt = jwt.sign(
+                            {
+                                id: existingUser.id,
+                                email: existingUser.usuario_email,
+                            },
+                            process.env.JWT_KEY
+                        );
+                    
+                        // Store it on session object
+                        req.session = {
+                            jwt: userJwt,
+                        };
+        
+                        // res.cookie("access_token", userJwt, {
+                        //     httpOnly: true,
+                        //     secure: process.env.NODE_ENV === "prod",
+                        // })
+        
+                        const message = new ExecutionMessage(
+                            MessageLevel.LEVEL_INFO,
+                            ExecutionStatus.SUCCESS,
+                            ExecutionTypes.CREATE,
+                            'Usuário autenticado com sucesso.',
+                            existingUser,
+                            {}
+                        )
+                        res.status(200).send(message);
+                    }
                 }
-            
-                const passwordsMatch = await Password.compare(
-                    existingUser.usuario_senha,
-                    password
-                )
-
-                if (!passwordsMatch) {
-                    throw new Error('Senha inválida.');
-                }
-            
-                // Generate JWT
-                const userJwt = jwt.sign(
-                    {
-                        id: existingUser.id,
-                        email: existingUser.usuario_email,
-                    },
-                    process.env.JWT_KEY
-                );
-            
-                // Store it on session object
-                req.session = {
-                    jwt: userJwt,
-                };
-
-                // res.cookie("access_token", userJwt, {
-                //     httpOnly: true,
-                //     secure: process.env.NODE_ENV === "prod",
-                // })
-
-                const message = new ExecutionMessage(
-                    MessageLevel.LEVEL_INFO,
-                    ExecutionStatus.SUCCESS,
-                    ExecutionTypes.CREATE,
-                    'Usuário autenticado com sucesso.',
-                    existingUser,
-                    {}
-                )
-
-                res.status(200).send(message);
             } else {
                 const message = new ExecutionMessage(
                     MessageLevel.LEVEL_WARNING,
