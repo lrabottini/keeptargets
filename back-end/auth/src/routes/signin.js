@@ -66,12 +66,11 @@ router.post(
                         req.session = {
                             jwt: userJwt,
                         };
-                        console.log(req.session.jwt)
         
-                        // res.cookie("access_token", userJwt, {
-                        //     httpOnly: true,
-                        //     secure: process.env.NODE_ENV === "prod",
-                        // })
+                        res.cookie("access_token", userJwt, {
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV === "prod",
+                        })
         
                         const message = new ExecutionMessage(
                             MessageLevel.LEVEL_INFO,

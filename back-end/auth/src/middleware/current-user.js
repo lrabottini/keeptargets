@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const curretUser = (req, res, next) => {
-    const token = req.session.jwt
+    const token = req.cookies.access_token
     if (token) {
         try {
             const payload = jwt.verify(token, process.env.JWT_KEY)

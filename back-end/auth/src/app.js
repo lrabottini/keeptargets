@@ -1,6 +1,6 @@
 import express from 'express';
 import cookieSession from 'cookie-session'
-//import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 import { currentUserRouter } from './routes/current-user.js';
 import { signinRouter } from './routes/signin.js';
@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.set('trust proxy', true);
 app.use(cookieSession({ signed: false, secure: process.env.NODE_ENV === 'prod' }));
-//app.use(cookieParser())
+app.use(cookieParser())
 
 // Rotas
 app.use(currentUserRouter);
