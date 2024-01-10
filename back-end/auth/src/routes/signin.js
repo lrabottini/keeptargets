@@ -27,7 +27,7 @@ router.get(
         
                 const existingUser = await Usuario.findOne({ usuario_email: email });
                 if (!existingUser) {
-                    throw new BadRequestError('Invalid credentials');
+                    throw new Error('Invalid credentials');
                 }
             
                 const passwordsMatch = await Password.compare(
@@ -36,7 +36,7 @@ router.get(
                 )
 
                 if (!passwordsMatch) {
-                    throw new BadRequestError('Invalid Credentials');
+                    throw new Error('Invalid Credentials');
                 }
             
                 // Generate JWT
