@@ -1,5 +1,19 @@
 import mongoose, { Schema, SchemaType } from "mongoose"
 
+const detalhes = []
+detalhes[0] = {nr_mes: 1, nome_mes: "Janeiro", previsto: 0, realizado:0 }
+detalhes[1] = {nr_mes: 2, nome_mes: "Fevereiro", previsto: 0, realizado:0 }
+detalhes[2] = {nr_mes: 3, nome_mes: "Março", previsto: 0, realizado:0 }
+detalhes[3] = {nr_mes: 4, nome_mes: "Abril", previsto: 0, realizado:0 }
+detalhes[4] = {nr_mes: 5, nome_mes: "Maio", previsto: 0, realizado:0 }
+detalhes[5] = {nr_mes: 6, nome_mes: "Junho", previsto: 0, realizado:0 }
+detalhes[6] = {nr_mes: 7, nome_mes: "Julho", previsto: 0, realizado:0 }
+detalhes[7] = {nr_mes: 8, nome_mes: "Agosto", previsto: 0, realizado:0 }
+detalhes[8] = {nr_mes: 9, nome_mes: "Setembro", previsto: 0, realizado:0 }
+detalhes[9] = {nr_mes: 10, nome_mes: "Outubro", previsto: 0, realizado:0 }
+detalhes[10] = {nr_mes: 11, nome_mes: "Novembro", previsto: 0, realizado:0 }
+detalhes[11] = {nr_mes: 12, nome_mes: "Dezembro", previsto: 0, realizado:0 }
+
 const linhaSchema = new mongoose.Schema({
     linha_org: mongoose.Types.ObjectId,
     linha_ciclo: mongoose.Types.ObjectId,
@@ -38,57 +52,14 @@ const linhaSchema = new mongoose.Schema({
             default: 0
         }
     },
-    linha_meses: {
-        Janeiro: {
-            type: Number,
-            default: 0
-        },
-        Fevereiro: {
-            type: Number,
-            default: 0
-        },
-        Março: {
-            type: Number,
-            default: 0
-        },
-        Abril: {
-            type: Number,
-            default: 0
-        },
-        Maio: {
-            type: Number,
-            default: 0
-        },
-        Junho: {
-            type: Number,
-            default: 0
-        },
-        Julho: {
-            type: Number,
-            default: 0
-        },
-        Agosto: {
-            type: Number,
-            default: 0
-        },
-        Setembro: {
-            type: Number,
-            default: 0
-        },
-        Outubro: {
-            type: Number,
-            default: 0
-        },
-        Novembro: {
-            type: Number,
-            default: 0
-        },
-        Dezembro: {
-            
-            type: Number,
-            default: 0
+    linha_detalhes: [
+        {
+            nr_mes: { type: Number},
+            nome_mes: { type: String},
+            previsto: { type: Number, default: 0},
+            realizado: { type: Number, default: 0}
         }
-    },
+    ],
     linha_etapa: mongoose.Types.ObjectId,
     linha_observacao: String,
     createdAt: {
