@@ -38,6 +38,57 @@ const linhaSchema = new mongoose.Schema({
             default: 0
         }
     },
+    linha_meses: {
+        Janeiro: {
+            type: Number,
+            default: 0
+        },
+        Fevereiro: {
+            type: Number,
+            default: 0
+        },
+        Março: {
+            type: Number,
+            default: 0
+        },
+        Abril: {
+            type: Number,
+            default: 0
+        },
+        Maio: {
+            type: Number,
+            default: 0
+        },
+        Junho: {
+            type: Number,
+            default: 0
+        },
+        Julho: {
+            type: Number,
+            default: 0
+        },
+        Agosto: {
+            type: Number,
+            default: 0
+        },
+        Setembro: {
+            type: Number,
+            default: 0
+        },
+        Outubro: {
+            type: Number,
+            default: 0
+        },
+        Novembro: {
+            type: Number,
+            default: 0
+        },
+        Dezembro: {
+            
+            type: Number,
+            default: 0
+        }
+    },
     linha_etapa: mongoose.Types.ObjectId,
     linha_observacao: String,
     createdAt: {

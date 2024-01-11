@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/linha/:id', async (req, res) => {
     try {
-        await Linha.findLinha(req.params.id)
+        await Linha.findById(req.params.id)
             .then((result) => {
                 res.send(result)
             })
