@@ -27,7 +27,7 @@ app.all('*', async (req, res) => {
         MessageLevel.LEVEL_ERROR,
         ExecutionStatus.ERROR,
         ExecutionTypes.PATH,
-        'Ops.',
+        'Não foi possível processar solicitação.',
         req.url,
         {} 
     )

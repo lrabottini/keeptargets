@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieSession from 'cookie-session'
 import cookieParser from 'cookie-parser';
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 
 import { currentUserRouter } from './routes/current-user.js';
 import { signinRouter } from './routes/signin.js';
@@ -22,7 +23,15 @@ app.use(signinRouter);
 app.use(signoutRouter);
 
 app.all('*', async (req, res) => {
-    res.status(404).send('Ops')
+    const message = new ExecutionMessage(
+        MessageLevel.LEVEL_ERROR,
+        ExecutionStatus.ERROR,
+        ExecutionTypes.PATH,
+        'Ops.',
+        req.url,
+        {} 
+    )
+    res.send(message)
 });
 
 export { app }
