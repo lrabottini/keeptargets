@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieSession from 'cookie-session';
+import { ExecutionMessage, ExecutionStatus, ExecutionTypes, MessageLevel } from '@keeptargets/common'
 
 import { createUsuario } from './routes/create.js'
 import { deleteUsuario } from './routes/delete.js'
@@ -22,7 +23,15 @@ app.use(deleteUsuario)
 app.use(updateUsuario)
 
 app.all('*', async (req, res) => {
-  throw new Error();
+    const message = new ExecutionMessage(
+        MessageLevel.LEVEL_ERROR,
+        ExecutionStatus.ERROR,
+        ExecutionTypes.PATH
+        'Ops.',
+        req.url,
+        {} 
+    )
+    res.send(message)
 });
 
 export { app }
