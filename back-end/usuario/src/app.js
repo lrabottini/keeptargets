@@ -26,7 +26,7 @@ app.all('*', async (req, res) => {
     const message = new ExecutionMessage(
         MessageLevel.LEVEL_ERROR,
         ExecutionStatus.ERROR,
-        ExecutionTypes.PATH
+        ExecutionTypes.PATH,
         'Ops.',
         req.url,
         {} 
