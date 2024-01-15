@@ -52,12 +52,22 @@ const linhaSchema = new mongoose.Schema({
             default: 0
         }
     },
+    linha_distribuicao: {
+        tipo_distribuicao: {type: String},
+        distribuicao: {
+            campo_1: {type: String},
+            campo_2: {type: String},
+            campo_3: {type: String},
+            campo_4: {type: String},
+            campo_5: {type: String}
+        }
+    },
     linha_detalhes: [
         {
-            nr_mes: { type: Number},
-            nome_mes: { type: String},
-            previsto: { type: Number, default: 0},
-            realizado: { type: Number, default: 0}
+            nr_mes: {type: Number},
+            nome_mes: {type: String},
+            previsto: {type: Number, default: 0},
+            realizado: {type: Number, default: 0}
         }
     ],
     linha_etapa: mongoose.Types.ObjectId,

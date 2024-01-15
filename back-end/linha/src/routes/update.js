@@ -36,7 +36,15 @@ router.put('/linha/:id', async (req, res) => {
                             valor_final_valor: req.body.valor_final_valor,
                         },
                         linha_etapa: new mongoose.Types.ObjectId(req.body.etapa),
-                        linha_observacao: req.body.obs
+                        linha_observacao: req.body.obs,
+                        linha_distribuicao: {
+                            tipo_distribuicao: req.body.tipo_distribuicao,
+                            distribuicao: {
+                                campo_1: req.body.campo_1,
+                                campo_2: req.body.campo_2,
+                            }
+                        },
+                        linha_detalhes: req.body.detalhes,
                     })
                     
                     linha.save()
