@@ -24,7 +24,7 @@
     ]
   },
   "dependencies": {
-    "@keeptargets/common": "^1.0.1",
+    "@keeptargets/common": "^1.0.33",
     "dotenv": "^16.3.1",
     "express": "^4.18.1",
     "express-validator": "^7.0.1",
