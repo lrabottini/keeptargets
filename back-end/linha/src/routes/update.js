@@ -44,7 +44,7 @@ router.put('/linha/:id', async (req, res) => {
                                 campo_2: req.body.campo_2,
                             }
                         },
-                        linha_detalhes: req.body.detalhes,
+                        linha_detalhes: JSON.parse(req.body.detalhes),
                     })
                     
                     linha.save()
