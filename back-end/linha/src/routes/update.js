@@ -14,6 +14,7 @@ router.put('/linha/:id', async (req, res) => {
         if (result.isEmpty()){
             await Linha.findById(req.params.id)
                 .then((linha) => {
+                    const detalhes = "[".concat(req.body.detalhes, ']')
                     linha.set({
                         linha_versao: new mongoose.Types.ObjectId(req.body.versao),
                         linha_classificacao: new mongoose.Types.ObjectId(req.body.classificacao),
@@ -44,7 +45,7 @@ router.put('/linha/:id', async (req, res) => {
                                 campo_2: req.body.campo_2,
                             }
                         },
-                        linha_detalhes: JSON.parse(req.body.detalhes),
+                        linha_detalhes: JSON.parse(detalhes),
                     })
                     console.log(req.body.detalhes)
                     
