@@ -1,7 +1,7 @@
 {
-  "name": "periodo",
+  "name": "linha",
   "version": "1.0.0",
-  "description": "",
+  "description": "Microsserviço responsável pelas linhas de orçamento",
   "main": "index.js",
   "keywords": [],
   "author": "",

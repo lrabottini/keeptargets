@@ -5,7 +5,7 @@
   },
   "type": "module",
   "name": "@keeptargets/common",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "main": "index.js",
   "devDependencies": {
     "del-cli": "^5.1.0"
