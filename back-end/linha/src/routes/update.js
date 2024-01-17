@@ -43,6 +43,10 @@ router.put('/linha/:id', async (req, res) => {
                             distribuicao: {
                                 campo_1: req.body.campo_1,
                                 campo_2: req.body.campo_2,
+                                campo_3: req.body.campo_3,
+                                campo_4: req.body.campo_4,
+                                campo_5: req.body.campo_5,
+                                campo_6: req.body.campo_6
                             }
                         },
                         linha_detalhes: JSON.parse(detalhes),

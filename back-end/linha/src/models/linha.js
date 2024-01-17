@@ -45,7 +45,8 @@ const linhaSchema = new mongoose.Schema({
             campo_2: {type: Number},
             campo_3: {type: Number},
             campo_4: {type: Number},
-            campo_5: {type: Number}
+            campo_5: {type: Number},
+            campo_6: {type: Number}
         }
     },
     linha_detalhes: [
