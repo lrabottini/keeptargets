@@ -47,7 +47,6 @@ router.put('/linha/:id', async (req, res) => {
                         },
                         linha_detalhes: JSON.parse(detalhes),
                     })
-                    console.log(req.body.detalhes)
                     
                     linha.save()
                     message = new ExecutionMessage(
