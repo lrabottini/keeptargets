@@ -40,6 +40,8 @@ const linhaSchema = new mongoose.Schema({
     },
     linha_distribuicao: {
         tipo_distribuicao: {type: String},
+        mes_valor: {type: Number, default: 0},
+        offset: {type: Number, default: 0},
         distribuicao: {
             campo_1: {type: Number},
             campo_2: {type: Number},

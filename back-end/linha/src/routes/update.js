@@ -40,6 +40,8 @@ router.put('/linha/:id', async (req, res) => {
                         linha_observacao: req.body.obs,
                         linha_distribuicao: {
                             tipo_distribuicao: req.body.tipo_distribuicao,
+                            mes_valor: req.body.mes_valor,
+                            offset: req.body.offset,
                             distribuicao: {
                                 campo_1: req.body.campo_1,
                                 campo_2: req.body.campo_2,
