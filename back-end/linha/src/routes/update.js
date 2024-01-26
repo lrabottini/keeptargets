@@ -42,6 +42,7 @@ router.put('/linha/:id', async (req, res) => {
                             tipo_distribuicao: req.body.tipo_distribuicao,
                             mes_valor: req.body.mes_valor,
                             offset: req.body.offset,
+                            reajuste: req.body.reajuste,
                             distribuicao: {
                                 campo_1: req.body.campo_1,
                                 campo_2: req.body.campo_2,
