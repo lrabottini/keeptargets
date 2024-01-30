@@ -15,6 +15,9 @@ router.put('/linha/:id', async (req, res) => {
             await Linha.findById(req.params.id)
                 .then((linha) => {
                     const detalhes = "[".concat(req.body.detalhes, ']')
+                    
+                    console.log(JSON.parse(detalhes))
+
                     linha.set({
                         linha_versao: new mongoose.Types.ObjectId(req.body.versao),
                         linha_classificacao: new mongoose.Types.ObjectId(req.body.classificacao),
