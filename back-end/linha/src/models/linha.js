@@ -54,10 +54,10 @@ const linhaSchema = new mongoose.Schema({
     },
     linha_detalhes: [
         {
-            nr_mes: {type: String},
+            nr_mes: {type: Number},
             nome_mes: {type: String},
-            previsto: {type: String},
-            realizado: {type: String}
+            previsto: {type: Number},
+            realizado: {type: Number}
         }
     ],
     linha_etapa: mongoose.Types.ObjectId,
