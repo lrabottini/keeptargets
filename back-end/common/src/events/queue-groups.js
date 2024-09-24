@@ -1,5 +1,0 @@
-const QueueGroups = {
-
-}
-
-export { QueueGroups }

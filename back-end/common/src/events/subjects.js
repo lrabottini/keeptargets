@@ -1,5 +1,0 @@
-const Subjects = {
-
-}
-
-export { Subjects }
