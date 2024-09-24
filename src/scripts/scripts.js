@@ -1,43 +1,49 @@
-function soma_previsto(valor_final) {
-    // Função para remover "R$" e converter para número
+function calculaValorFinalMonetario(valor_final) {
     function parseCurrency(value) {
-        // Verifica se o valor é vazio, nulo ou indefinido, e retorna 0 nesses casos
         if (!value) {
             return 0;
         }
-        return parseFloat(value.replace('R$ ', '').replace(',', '')) || 0;
+        // Remove "R$ ", pontos de milhar e converte para número em centavos
+        return Math.round(parseFloat(value.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) * 100) || 0;
     }
 
-    // Selecionar todos os elementos com o id=input_previsto_monetario
-    let elements = document.querySelectorAll("[id=input_previsto_monetario]");
+    // Função para formatar o valor como Real brasileiro (R$)
+    function formatToBRL(value) {
+        return (value / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 
-    // Inicializar soma
-    let total = 0;
+    var target = document.getElementById('input_valor_final_monetario');
+    let elements = document.querySelectorAll("[id^='input_previsto_monetario']");
 
-    // Iterar sobre os elementos, remover "R$" e somar os valores
-    elements.forEach(function (element) {
-        total += parseCurrency(element.value);
-    });
+    if (elements.length > 0) {
+        let total = 0;
+    
+        // Soma os valores de cada campo input em centavos
+        elements.forEach(function (element) {
+            total += parseCurrency(element.value);
+        });
 
-    // Retornar o resultado da soma
-    return total;
+        // Formata o valor total e exibe no campo de valor final
+        target.value = formatToBRL(total);
+    } else {
+        // Se não houver elementos, define o valor como R$ 0,00
+        target.value = formatToBRL(0);
+    }
 }
 
-function retorna_valor_previsto(id){
+function retorna_valor_previsto_monetario(id){
     const previsto_monetario = document.getElementById(`input_previsto_monetario_${id}`)
+
     if (previsto_monetario) {
-        const valor =  parseFloat(previsto_monetario.value.replace(/[^0-9,-]+/g, '').replace(',', '.')).toFixed(2)
-        return valor
+            if (previsto_monetario.value === null){
+                return 0
+            } else {
+                return parseFloat(previsto_monetario.value.replace(/[^0-9,-]+/g, '').replace(',', '.')).toFixed(2)
+            }
     } else {
         return 0;
     }
 }
-
-
-retorna_valor_previsto()
-
-soma_previsto(0);
-
 
 function get_index(valor){
     const lista = []
@@ -45,6 +51,27 @@ function get_index(valor){
 }
 
 get_index()
+
+function valor_final(valor_final) {
+    let previsto_unidade = document.querySelectorAll("[id=input_previsto_unidade]");
+
+    return elements.length > 0 ? elements[elements.length-1].value : 0 
+}
+    
+
+function listaValorPrevistoUnidade() {
+    let lista = document.querySelectorAll("[id=input_previsto_unidade]");
+
+    if (lista) {
+        if (lista.length > 0) {
+            return lista
+        } else {
+            return 
+        }
+    } else {
+        return []
+    }
+}
 
 // Script Máscara R$
 document.addEventListener('input', function(event) {
@@ -109,65 +136,21 @@ document.addEventListener('input', function(event) {
     }, 100); // Verifica a cada 100ms
 });
 
-
-function soma_previsto(valor_final) {
-    // Função para remover "R$" e converter para número
-    function parseCurrency(value) {
-        // Verifica se o valor é vazio, nulo ou indefinido, e retorna 0 nesses casos
-        if (!value) {
-            return 0;
-        }
-        return parseFloat(value.replace('R$ ', '').replace(',', '')) || 0;
-    }
-
-    // Selecionar todos os elementos com o id=input_previsto_monetario
-    let elements = document.querySelectorAll("[id=input_previsto_monetario]");
-
-    // Inicializar soma
-    let total = 0;
-
-    // Iterar sobre os elementos, remover "R$" e somar os valores
-    elements.forEach(function (element) {
-        total += parseCurrency(element.value);
-    });
-
-    // Retornar o resultado da soma
-    return total;
-}
-
-soma_previsto(0);
-
-function valor_final(valor_final) {
-    let previsto_unidade = document.querySelectorAll("[id=input_previsto_unidade]");
-
-    return elements.length > 0 ? elements[elements.length-1].value : 0 
-}
-    
-
-function listaValorPrevistoUnidade() {
-    let lista = document.querySelectorAll("[id=input_previsto_unidade]");
-
-    if (lista) {
-        if (lista.length > 0) {
-            return lista
-        } else {
-            return 
-        }
-    } else {
-        return []
-    }
-}
-
-listaValorPrevistoUnidade()
-
 // Script Valor Final Monetário 
 document.addEventListener('input', function(event) {
     if (event.target.id.startsWith('input_previsto_monetario')) {
+        // Função para converter e limpar o valor monetário, garantindo que centavos sejam considerados
         function parseCurrency(value) {
             if (!value) {
                 return 0;
             }
-            return parseFloat(value.replace('R$ ', '').replace(',', '')) || 0;
+            // Remove "R$ ", pontos de milhar e converte para número em centavos
+            return Math.round(parseFloat(value.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) * 100) || 0;
+        }
+
+        // Função para formatar o valor como Real brasileiro (R$)
+        function formatToBRL(value) {
+            return (value / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         let elements = document.querySelectorAll("[id^='input_previsto_monetario']");
@@ -175,17 +158,22 @@ document.addEventListener('input', function(event) {
         if (elements.length > 0) {
             let total = 0;
         
+            // Soma os valores de cada campo input em centavos
             elements.forEach(function (element) {
                 total += parseCurrency(element.value);
             });
 
+            // Formata o valor total e exibe no campo de valor final
             var target = document.getElementById('input_valor_final_monetario');
-            target.value = total;
+            target.value = formatToBRL(total);
         } else {
-            target.value = 0;
+            // Se não houver elementos, define o valor como R$ 0,00
+            var target = document.getElementById('input_valor_final_monetario');
+            target.value = formatToBRL(0);
         }
     }
 });
+
 
 // Script Valor Final Unidade
 document.addEventListener('input', function(event) {
