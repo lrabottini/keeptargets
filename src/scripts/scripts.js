@@ -32,7 +32,7 @@ function totalizaValores() {
         return Math.round(parseFloat(value.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) * 100) || 0;
     }
 
-    let allPrevistoValor = document.querySelectorAll("[id^='input_previsto_monetario']");
+    let allPrevistoValor = document.querySelectorAll("[id^='input_previsto_valor']");
     let totalPrevistoValor = 0;
 
     if (allPrevistoValor.length > 0) {
@@ -65,6 +65,10 @@ function totalizaValores() {
         });
     }
     
+    console.log(totalPrevistoValor/100)
+    console.log(totalRealizadoValor/100)
+    console.log(totalRealizadoUnidade)
+
     return [totalPrevistoValor/100, totalRealizadoValor/100, totalRealizadoUnidade]
 }
 
@@ -121,7 +125,6 @@ function calculaValorFinalMonetario() {
 
 bubble_fn_calculavalorfinalmonetario(calculaValorFinalMonetario())
 
-// Função para retornar os valores previstos e realizados, por distribuição
 function retornaValores(id){
     function parseCurrency(value) {
         if (!value) {
@@ -135,52 +138,50 @@ function retornaValores(id){
 
     const previstoValor = document.getElementById(`input_previsto_valor_${id}`)
     if (previstoValor) {
-            if (previstoValor.value === null){
-                result.push(0)
-            } else {
-                result.push(parseCurrency(previstoValor.value)/100)
-            }
+        if (previstoValor.value === null){
+            result.push((0).toFixed(2))
+        } else {
+            result.push((parseCurrency(previstoValor.value) / 100).toFixed(2))
+        }
     } else {
-        result.push(0)
+        result.push((0).toFixed(2))
     }
 
     const realizadoValor = document.getElementById(`input_realizado_valor_${id}`)
     if (realizadoValor) {
-            if (realizadoValor.value === null){
-                result.push(0)
-            } else {
-                result.push(parseCurrency(realizadoValor.value)/100)
-            }
+        if (realizadoValor.value === null){
+            result.push((0).toFixed(2))
+        } else {
+            result.push((parseCurrency(realizadoValor.value) / 100).toFixed(2))
+        }
     } else {
-        result.push(0)
+        result.push((0).toFixed(2))
     }
 
     const previstoUnidade = document.getElementById(`input_previsto_unidade_${id}`)
     if (previstoUnidade) {
-            if (previstoUnidade.value === null){
-                result.push(0)
-            } else {
-                result.push(parseFloat(previstoUnidade.value))
-            }
+        if (previstoUnidade.value === null){
+            result.push((0).toFixed(2))
+        } else {
+            result.push(parseFloat(previstoUnidade.value).toFixed(2))
+        }
     } else {
-        result.push(0)
+        result.push((0).toFixed(2))
     }
 
-    const realizadoUnidade = document.getElementById(`input_previsto_unidade_${id}`)
+    const realizadoUnidade = document.getElementById(`input_realizado_unidade_${id}`)
     if (realizadoUnidade) {
-            if (realizadoUnidade.value === null){
-                result.push(0)
-            } else {
-                result.push(parseFloat(realizadoUnidade.value))
-            }
+        if (realizadoUnidade.value === null){
+            result.push((0).toFixed(2))
+        } else {
+            result.push(parseFloat(realizadoUnidade.value).toFixed(2))
+        }
     } else {
-        result.push(0)
+        result.push((0).toFixed(2))
     }
 
     return result
 }
-
-retornaPrevistoValor()
 
 // Script Máscara R$
 document.addEventListener('input', function(event) {
@@ -305,3 +306,43 @@ document.addEventListener('input', function(event) {
         target.value = elements.length > 0 ? elements[elements.length-1].value : 0
     }
 })
+
+const distribuicao = {
+    "ano": "",
+    "mes": "",
+    "observações": "",
+    "ordem": "",
+    "previsto unitário": "",
+    "previsto valor": "",
+    "realizado unitário": "",
+    "realizado valor": "",
+    "situação financeira": "",
+    "anexos": [
+        {
+            "url":""
+        }
+    ]
+}
+
+
+const valores = 
+
+var distribuicao = JSON.parse(objeto)
+
+console.log(distribuicao)
+console.log(distribuicao["previsto unitário"])
+console.log(distribuicao["previsto valor"])
+console.log(distribuicao["realizado unitário"])
+console.log(distribuicao["realizado valor"])
+
+objeto["previsto unitário"] = 0
+objeto["previsto valor"] = 0
+objeto["realizado unitário"] = 0
+objeto["realizado valor"] = 0
+
+bubble_fn_atualizaDistribuicao(JSON.stringify(distribuicao))
+
+?<=\"previsto valor\":\")[0-9]+\.[0-9]{2}
+
+
+{value_list: filtro[0], output1: filtro[1], output2: filtro[2], }
