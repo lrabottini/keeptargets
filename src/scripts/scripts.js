@@ -324,25 +324,143 @@ const distribuicao = {
     ]
 }
 
+function xxx {
+    const valores = 
 
-const valores = 
+    var distribuicao = JSON.parse(objeto)
+    
+    console.log(distribuicao)
+    console.log(distribuicao["previsto unitário"])
+    console.log(distribuicao["previsto valor"])
+    console.log(distribuicao["realizado unitário"])
+    console.log(distribuicao["realizado valor"])
+    
+    objeto["previsto unitário"] = 0
+    objeto["previsto valor"] = 0
+    objeto["realizado unitário"] = 0
+    objeto["realizado valor"] = 0
+    
+    //bubble_fn_atualizaDistribuicao(JSON.stringify(distribuicao))
+    
+    //?<=\"previsto valor\":\")[0-9]+\.[0-9]{2}
+    
+    
+    //{value_list: filtro[0], output1: filtro.slice(1).join(';')}}
+}
 
-var distribuicao = JSON.parse(objeto)
+function {
+    var saldo_ate = 
+    var saldo_a_partir = 
+    var saldo_final = saldo_a_partir - saldo_ate
 
-console.log(distribuicao)
-console.log(distribuicao["previsto unitário"])
-console.log(distribuicao["previsto valor"])
-console.log(distribuicao["realizado unitário"])
-console.log(distribuicao["realizado valor"])
+    bubble_fn_retorna_saldo_final(saldo_final)
+}
 
-objeto["previsto unitário"] = 0
-objeto["previsto valor"] = 0
-objeto["realizado unitário"] = 0
-objeto["realizado valor"] = 0
+// Aplicar distribuição
 
-bubble_fn_atualizaDistribuicao(JSON.stringify(distribuicao))
+const valores = []
 
-?<=\"previsto valor\":\")[0-9]+\.[0-9]{2}
+for (mes = 1; mes <= 12; mes++){
+    if (mes%5==0){
+        valores.push()
+    } else {
+        valores.push(0)
+    }
+}
+
+<script>
+  // Injetando CSS dinamicamente
+  let style = document.createElement('style');
+  style.innerHTML = `
+    #menu_linha {
+        display: none; /* Inicialmente escondido */
+        background-color: rgba(255, 0, 0, 0.5); /* Cor de fundo visível para depuração */
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+        position: absolute; /* Necessário para o posicionamento absoluto */
+        min-width: 100px;
+        min-height: 50px;
+        border: 2px solid black; /* Bordas visíveis para depuração */
+        z-index: 99999; /* Garantir que o Focus Group fique acima de todos os outros elementos */
+        pointer-events: all; /* Garante que o Focus Group seja interativo */
+    }
+  `;
+  document.head.appendChild(style);
+
+  <script>
+  // Injetando CSS dinamicamente para garantir que o menu tenha um z-index adequado
+  let style = document.createElement('style');
+  style.innerHTML = `
+    #menu_linha {
+        display: none; /* Inicialmente escondido */
+        background-color: rgba(255, 0, 0, 0.5); /* Cor de fundo visível para depuração */
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+        position: absolute; /* Necessário para o posicionamento absoluto */
+        min-width: 100px;
+        min-height: 50px;
+        border: 2px solid black; /* Bordas visíveis para depuração */
+        z-index: 99999; /* Garantir que o Focus Group fique acima de todos os outros elementos */
+        pointer-events: all; /* Garante que o Focus Group seja interativo */
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Injetando o Script
+  let interval = setInterval(function() {
+      // Seleciona todos os grupos com ID que começa com "grp_menu_linha"
+      let groups = document.querySelectorAll('[id^=grp_menu_linha]');
+      
+      // Verifica se os grupos foram carregados
+      if (groups.length > 0) {
+          clearInterval(interval); // Para o intervalo após os elementos serem encontrados
+
+          groups.forEach(function(group) {
+              console.log("Grupo encontrado:", group.id);
+
+              // Adiciona o evento de clique ao grupo
+              group.addEventListener("click", function(event) {
+                  console.log("Grupo clicado:", group.id); // Verifica se o clique foi detectado
+
+                  let focusGroup = document.getElementById("menu_linha");
+
+                  if (focusGroup) {
+                      // Força a exibição do Focus Group
+                      focusGroup.style.display = "block"; // Garante que o Focus Group será exibido
+
+                      // Obtém as coordenadas do grupo clicado
+                      let groupRect = group.getBoundingClientRect(); 
+                      console.log("Coordenadas do grupo:", groupRect); // Exibe as coordenadas para depuração
+
+                      // Calcula a posição do Focus Group
+                      let top = groupRect.top + window.scrollY + groupRect.height / 2 - focusGroup.offsetHeight / 2;
+                      let left = groupRect.left + window.scrollX - focusGroup.offsetWidth - 10;
+
+                      // Aplica o "reference element" ao Focus Group
+                      focusGroup.style.position = "absolute";
+                      focusGroup.style.top = `${top}px`;
+                      focusGroup.style.left = `${left}px`;
+
+                      // Exibe a posição calculada do Focus Group para depuração
+                      console.log("Posição calculada do Focus Group:", focusGroup.style.left, focusGroup.style.top);
+                  }
+              });
+          });
+      }
+  }, 100); // Verifica a cada 100ms se os grupos foram carregados
+
+  // Função para fechar o Floating Group ao clicar fora
+  document.addEventListener("click", function(event) {
+      let focusGroup = document.getElementById("menu_linha");
+
+      // Verifica se o clique foi fora do Floating Group e do grupo que o disparou
+      if (focusGroup && !focusGroup.contains(event.target) && !document.querySelector('[id^=grp_menu_linha]:hover')) {
+          console.log("Clique fora do Floating Group, fechando...");
+          focusGroup.style.display = "none"; // Esconde o Floating Group
+      }
+  });
+</script>
 
 
-{value_list: filtro[0], output1: filtro[1], output2: filtro[2], }
