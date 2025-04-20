@@ -1,0 +1,18 @@
+{
+  "name": "checkout",
+  "version": "1.0.0",
+  "description": "",
+  "main": "trocar_assinatura.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "checkout": "file:",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "serverless-http": "^3.2.0",
+    "stripe": "^17.7.0"
+  }
+}
