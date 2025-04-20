@@ -1,5 +1,4 @@
 // Importações
-const stripe = require('stripe')(sk_test_51QxBZ8QqnE8DY5lEwnbbMa4ieNYwo0GTIf0afAnlLKLpEWE5EdOXzhGcdGtHOWWASIiFMq4HoxYeIdvY7KsC8eXV00uHRhbc68);
 const express = require('express');
 const serverless = require('serverless-http'); // Adapta Express ao Lambda
 
