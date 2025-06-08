@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@keeptargets/common": "file:",
     "date-fns": "^2.30.0",
     "node-nats-streaming": "^0.3.2"
   },

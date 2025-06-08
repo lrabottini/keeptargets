@@ -356,6 +356,56 @@ function {
     bubble_fn_retorna_saldo_final(saldo_final)
 }
 
+// Script soma aprovado e aplica cotação da moeda padrão
+function somarValoresAprovados() {
+    let total = 0;
+
+    const inputs = document.querySelectorAll('[id^="input_aprovado"]');
+
+    inputs.forEach(input => {
+        let rawValue = input?.textContent ?? '';
+
+        console.log(rawValue)
+
+        // Remove "R$", espaços e pontos de milhar, troca vírgula por ponto
+        let valorLimpo = rawValue
+            .replace(/\s/g, '')       // remove espaços
+            .replace('R$', '')        // remove o "R$"
+            .replace(/\./g, '')       // remove pontos (milhar)
+            .replace(',', '.');       // troca vírgula decimal por ponto
+
+        const numero = parseFloat(valorLimpo);
+
+        if (!isNaN(numero)) {
+            total += numero;
+        }
+        });
+
+    return total;
+}
+
+somarValoresAprovados()
+
+// Aguarda até os elementos estarem no DOM antes de executar
+function aguardarElementosEExecutar(callback, tentativas = 20, intervalo = 300) {
+    const existeElemento = document.querySelector('[id^="input_aprovado"]');
+  
+    if (existeElemento) {
+      callback();
+    } else if (tentativas > 0) {
+      setTimeout(() => {
+        aguardarElementosEExecutar(callback, tentativas - 1, intervalo);
+      }, intervalo);
+    } else {
+      console.error("Elementos com id^='input_aprovado' não foram encontrados após várias tentativas.");
+    }
+  }
+  
+  // Inicia a verificação após o DOM carregar
+  window.addEventListener('DOMContentLoaded', () => {
+    aguardarElementosEExecutar(somarValoresAprovados);
+  });
+
 // Aplicar distribuição
 
 const valores = []
@@ -462,5 +512,3 @@ for (mes = 1; mes <= 12; mes++){
       }
   });
 </script>
-
-

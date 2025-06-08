@@ -26,8 +26,6 @@
             return error
         })
 
-        console.log("passei aqui")
-
         if (!resStatus == 200){
             console.log("erro")
 
@@ -44,9 +42,6 @@
         result.push("erro")
         result.push(error.message)
     }
-
-    console.log("passei aqui também")
-    console.log(result)
 
     bubble_fn_trocar_plano(result)
 })

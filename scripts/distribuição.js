@@ -72,3 +72,21 @@ if (ultimoIndiceNaoZero >= 0) {
 }
 
 bubble_fn_aplicar_distribuicao(valores);
+
+// distribuição "distribuir valor"
+const valores = new Array(properties.param1).fill(properties.param1);
+
+bubble_fn_aplicar_distribuicao(valores)
+
+//distribuição "com aumento de"
+const valores = new Array(properties.param1).fill(0);
+
+for (let i = 0; i < properties.param2; i++) {
+    valores[i-1] = properties.param3;
+}
+
+for (let i = properties.param2; i <= properties.param1; i++) {
+    valores[i-1] = properties.param4;
+}
+
+bubble_fn_aplicar_distribuicao(valores)
