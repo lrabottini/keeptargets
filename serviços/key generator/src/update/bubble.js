@@ -1,22 +1,22 @@
 (async () => {
-    const endpoint = "https://n4po04bzta.execute-api.sa-east-1.amazonaws.com/prod/chaves/generate"; // Substitua aqui
-  
+    const endpoint = "https://n4po04bzta.execute-api.sa-east-1.amazonaws.com/prod/chaves/update"
+    
     const payload = {
         id_cliente: `${properties.param1}`,
-        nome: `${properties.param2}`,
-        dias_validade: properties.param3,
+        chave_publica: `${properties.param2}`,
+        ativo: `${properties.param3}`,
         tabelas_permitidas: `${properties.param4}`
     };
-  
+
     try {
         const response = await fetch(endpoint, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
-  
+    
         if (!response.ok) {
             const erro = await response.json();
             throw new Error(erro.error || "Erro ao gerar chave");
@@ -29,21 +29,17 @@
             "yes",
             `${data.id_cliente}`,
             `${data.chave_publica}`,
-            `${data.criado_em}`,
-            `${data.expira_em}`,
+            `${data.ativo}`,
             `${data.tabelas_permitidas}`,
-            `${data.dias_validade}`,
-            `${data.nome}`,
         ])
-  
+    
     } catch (erro) {
         console.error("Erro ao gerar chave:", erro.message);
-  
+    
         // Retorno com erro
         bubble_fn_dadosChave([
             "no",
             `${erro.message}`
         ]);
     }
-})();
-  
+})(); 

@@ -40,7 +40,7 @@ const addCorsHeaders = (res) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 };
 
-app.post("/generate", async (req, res) => {
+app.post("/chaves/generate", async (req, res) => {
     const { id_cliente, nome, dias_validade, tabelas_permitidas } = req.body;
     
     if (!id_cliente) {
