@@ -34,6 +34,7 @@
             `${data.tabelas_permitidas}`,
             `${data.dias_validade}`,
             `${data.nome}`,
+            `${data.chave_secreta}`
         ])
   
     } catch (erro) {

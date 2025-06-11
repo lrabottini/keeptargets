@@ -12,7 +12,6 @@
     "@aws-sdk/client-dynamodb": "^3.826.0",
     "axios": "^1.9.0",
     "express": "^5.1.0",
-    "generate": "file:",
     "serverless-http": "^3.2.0"
   }
 }

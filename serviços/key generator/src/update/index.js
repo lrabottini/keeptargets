@@ -51,7 +51,7 @@ app.put("/chaves/update", async (req, res) => {
 	
 		if (ativo) {
 			updates.push("ativo = :ativo");
-			expressionValues[":ativo"] = { S: ativo };
+			expressionValues[":ativo"] = { BOOL: ativo };
 		}
 
 		if (tabelas_permitidas) {
