@@ -1,5 +1,5 @@
 (async () => {
-    const endpoint = "https://n4po04bzta.execute-api.sa-east-1.amazonaws.com/prod/chaves/update"
+    const endpoint = `${properties.param5}`
     
     const payload = {
         id_cliente: `${properties.param1}`,

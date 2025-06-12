@@ -3,42 +3,28 @@ const serverless = require("serverless-http");
 const { DynamoDBClient, DeleteItemCommand } = require("@aws-sdk/client-dynamodb");
 
 const app = express();
-app.use((req, res, next) => {
-    // Se o body for um Buffer, tenta converter para JSON
-    if (Buffer.isBuffer(req.body)) {
-      try {
-        const rawBody = req.body.toString();
-        req.body = JSON.parse(rawBody);
-        console.log("Body convertido do Buffer:", req.body);
-      } catch (e) {
-        console.warn("Erro ao converter Buffer em JSON:", e);
-        return res.status(400).json({ error: "Body inválido" });
-      }
-    }
-    next();
-  });
-app.use(express.json());
 
-const client = new DynamoDBClient({ region: "sa-east-1" });
+const regiao = process.env.REGIAO || "sa-east-1";
+const client = new DynamoDBClient({ region: regiao });
 
 const addCorsHeaders = (res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 };
 
-app.options("/chaves/delete", (req, res) => {
+app.options("/v1/key/delete", (req, res) => {
     addCorsHeaders(res);
     res.status(200).send();
 });
 
-app.delete("/chaves/delete", async (req, res) => {
+app.delete("/v1/key/delete", async (req, res) => {
     addCorsHeaders(res);
 
-    const { id_cliente, chave_publica } = req.body;
+    const { id_cliente, chave_publica } = req.query;
 
     if (!id_cliente || !chave_publica) {
-        return res.status(400).json({ error: "id_cliente e chave_publica são obrigatórios" });
+        return res.status(400).json({ error: "id_cliente e chave_publica são obrigatórios na URL" });
     }
 
     try {
@@ -51,6 +37,7 @@ app.delete("/chaves/delete", async (req, res) => {
         });
 
         await client.send(command);
+
         res.status(200).json({ sucesso: true, mensagem: "Chave excluída com sucesso" });
 
     } catch (err) {

@@ -21,20 +21,21 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-const client = new DynamoDBClient({ region: "sa-east-1" });
+const regiao = process.env.REGIAO || "sa-east-1"
+const client = new DynamoDBClient({ region: regiao });
 
 const addCorsHeaders = (res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*"); // Ou defina seu domínio
-	res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+	res.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 };
 
-app.options("/chaves/update", (req, res) => {
+app.options("/v1/key/update", (req, res) => {
 	addCorsHeaders(res);
 	res.status(200).send();
 });
 
-app.put("/chaves/update", async (req, res) => {
+app.put("/v1/key/update", async (req, res) => {
 	try {
 		addCorsHeaders(res);
 
