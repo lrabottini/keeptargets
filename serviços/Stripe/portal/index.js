@@ -1,6 +1,5 @@
 const express = require("express");
-//const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const stripe = require('stripe')("sk_test_51QxBYwBxrGev9VhBwSOvqJMqOZHfBvmkZ8MATU6GxzLyFfzcmwtL39hfKhJOBtrjY8la4cLjJEG2dBMdK5zYzMpC00vUnIQcZS");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const serverless = require('serverless-http'); // Adapta Express ao Lambda
 
 const app = express();
