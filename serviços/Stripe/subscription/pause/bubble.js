@@ -1,9 +1,8 @@
 (async () => {
-    const result = []
-
-    const subscription_id = `${properties.param1}`
+    // const subscription_id = `${properties.param1}`
+    const subscription_id = 'sub_1RgeULBxrGev9VhBYCaV3pGx'
     try {
-        const res = await fetch(`${properties.param2}`, {
+        const res = await fetch("https://api.keeptargets.com.br/subscription/pause", {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -17,18 +16,19 @@
             return error
         })
 
-        result.push(res.return_code)
-
-        if (res.return_code === `${properties.param3}`){
-            result.push(res.subscription_id)
-            result.push(res.status)
-        } else {
-            result.push(res.error)
+        if (res.return_code !== "SUB_PAUSE_SUCCESS"){
+            throw new Error(JSON.stringify({
+                return_code: res.return_code,
+                error: res.error
+            }))
         }
+
+        bubble_fn_pausar_assinatura([res.return_code, res.subscription_id, res.status]);
     }catch(error){
-        result.push(error.message)
+        const obj = JSON.parse(error.message);
+        const result = Object.values(obj);        
+        
+        bubble_fn_pausar_assinatura(result)
     }
-    
-    bubble_fn_pausar_assinatura(result)
 })
 ()

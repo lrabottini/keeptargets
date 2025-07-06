@@ -48,7 +48,7 @@ app.post("/subscription/create-intent", async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             return_code: "SETUP_INTENT_ERROR",
-            error: err.message
+            error: error.message
         });
     }
 });

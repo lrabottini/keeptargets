@@ -34,14 +34,14 @@ app.put("/subscription/update", async (req, res) => {
 
         if (!id_assinatura) {
             return res.status(400).json({
-                error_code: 'SUB_ID_NOT_FOUND',
+                return_code: 'SUB_ID_NOT_FOUND',
                 error: 'id da assinatua não informado.'
             });
         }
     
         if (!preço) {
             return res.status(400).json({
-                error_code: 'PRICE_ID_NOT_FOUND',
+                return_code: 'PRICE_ID_NOT_FOUND',
                 error: 'novo preço não informado.'
             });
         }
@@ -58,14 +58,17 @@ app.put("/subscription/update", async (req, res) => {
                 price: preço
             }]
         });
-    
+
         return res.status(200).json({
-            message: 'Assinatura atualizada com sucesso.',
+            return_code: 'SUB_UPDATE_SUCCESS',
             subscription_id: updated.id,
-            current_price: updated.items.data[0].price.id
+            status: updated.status
         });
       } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({
+            return_code: 'SUB_UPDATE_ERROR',
+            error: err.message
+        });
       }        
 });
 
